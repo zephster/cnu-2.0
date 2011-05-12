@@ -55,41 +55,30 @@ namespace CNU_CS
             //actually download the update, and show progress bar and speed if possible
         }
 
+        public void updateCallback(object sender, DownloadStringCompletedEventArgs e)
+        {
+            string latest_version = e.Result;
+            lbl_lastDownloaded.Text = latest_version;
+            btn_checkUpdate.Enabled = true;
+            btn_checkUpdate.Text = "Check for Update";
+        }
+
         private void btn_checkUpdate_Click(object sender, EventArgs e)
         {
-            string latest = null;
+            //make this a changeable setting, in case google changes the url again.
             Uri latest_url = new Uri("http://build.chromium.org/f/chromium/snapshots/chromium-rel-xp/LATEST");
+            WebClient client = new WebClient();
+
             btn_checkUpdate.Text = "Checking...";
             btn_checkUpdate.Enabled = false;
 
-            var client = new WebClient();
-            test = client.DownloadStringAsync(latest_url);
-
-
-
-            
-
-
-            /*
             try
             {
-                //make the url a changeable setting in case it ever changes and i dont wanna push a new code update out
-                Uri latest_version = new Uri(latest_url);
-                WebRequest request = WebRequest.Create(latest_version);
-                WebResponse response = request.GetResponse();
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                latest = reader.ReadToEnd();
+                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(updateCallback);
+                client.DownloadStringAsync(latest_url);
+            } catch (Exception err){
+                throw new Exception("Error checking for latest vesion, oh no!\n" + err.Message, err);
             }
-            catch (Exception err)
-            {
-                throw new Exception("Error checking for update: " + err.Message, err);
-            }
-            
-
-            lbl_lastDownloaded.Text = latest;*/
-            btn_checkUpdate.Enabled = true;
-            btn_checkUpdate.Text = "Check for Update";
         }
     }
 }
