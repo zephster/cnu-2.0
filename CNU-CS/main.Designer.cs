@@ -33,6 +33,7 @@
             this.lbl_lastDownloaded = new System.Windows.Forms.Label();
             this.lbl_latestBuild = new System.Windows.Forms.Label();
             this.btn_checkUpdate = new System.Windows.Forms.Button();
+            this.progress_bar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -90,11 +91,19 @@
             this.btn_checkUpdate.UseVisualStyleBackColor = true;
             this.btn_checkUpdate.Click += new System.EventHandler(this.btn_checkUpdate_Click);
             // 
+            // progress_bar
+            // 
+            this.progress_bar.Location = new System.Drawing.Point(48, 288);
+            this.progress_bar.Name = "progress_bar";
+            this.progress_bar.Size = new System.Drawing.Size(100, 23);
+            this.progress_bar.TabIndex = 2;
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(194, 376);
+            this.Controls.Add(this.progress_bar);
             this.Controls.Add(this.btn_checkUpdate);
             this.Controls.Add(this.lbl_latestBuild);
             this.Controls.Add(this.lbl_latestBuildText);
@@ -120,6 +129,7 @@
         private System.Windows.Forms.Label lbl_lastDownloaded;
         private System.Windows.Forms.Label lbl_latestBuild;
         private System.Windows.Forms.Button btn_checkUpdate;
+        private System.Windows.Forms.ProgressBar progress_bar;
 
     }
 }
