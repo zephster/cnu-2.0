@@ -10,3 +10,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+/*
+* todo:
+* changelog
+* settings tab
+* option to auto-check on startup
+* keep x number of past copies
+* auto-unzip
+* update checker/downloader/updater for cnu
+* custom download file naming (the zip file)
+*
+* more...
+*/
