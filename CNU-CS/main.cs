@@ -121,7 +121,7 @@ namespace CNU_CS
 
         /// <summary>
         /// 	System.Xml.XmlDocument doc = new XmlDocument() ;
-	    ///     doc.Load("http://www.eggheadcafe.com/rss.xml");
+	    ///     doc.Load("changelog.xml");
 	    ///     Console.WriteLine(doc.OuterXml );
 	    ///     Console.ReadLine();
         /// </summary>
@@ -132,19 +132,19 @@ namespace CNU_CS
 
         private void downloadUpdate()
         {
-            //actually download the update, and show progress bar and speed if possible
-            //http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/" & lblLatest & "/chrome-win32.zip
             try
             {
                 string appPath = Path.GetDirectoryName(Application.ExecutablePath);
                 Uri latest_build = new Uri("http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/"
-                    //+ this.latest_build
-                    + "85361"
+                    + this.latest_build
+                    //+ "85361"
                     + "/chrome-win32.zip");
 
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
                 client.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                
+                //test smaller file
                 //client.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\chrome-win32.zip");
             }
             catch (Exception err)
