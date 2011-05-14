@@ -11,12 +11,6 @@ using System.Xml;
 using System.Net;
 using System.Threading;
 
-//http://www.csharp-examples.net/download-files/
-//http://www.developerfusion.com/article/4637/retrieving-http-content-in-net/2/
-//http://www.csharp-examples.net/xml-nodes-by-name/
-//http://support.microsoft.com/kb/307643
-//http://msdn.microsoft.com/en-us/library/aa730869%28v=vs.80%29.aspx - settings file (for options)
-
 /*
  * ideas:
  *      option to auto-check on startup
