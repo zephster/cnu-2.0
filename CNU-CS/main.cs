@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+ * Chrome Nightly Updater+ 2.0, ©2010 Brandon Sachs <antizeph@gmail.com>
+ * 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,11 +29,14 @@ using System.Net;
 using System.Threading;
 
 /*
- * ideas:
+ * todo:
+ *      changelog
+ *      settings tab
  *      option to auto-check on startup
  *      keep x number of past copies
  *      auto-unzip
- *      update checker/downloader/updater
+ *      update checker/downloader/updater for cnu
+ *      custom download file naming (the zip file)
  */
 
 
@@ -26,20 +46,29 @@ namespace CNU_CS
     {
 
         private static WebClient client = new WebClient();
-        //change to proper int type later!
+        //public int latets_build;
+        //public int last_downloaded;
         public string latest_build;
         public string last_downloaded;
+        public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
 
         public main()
         {
             InitializeComponent();
             lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
             client.Headers.Add("UserAgent", "cnup2!");
+
+            //set version in settings
+
+
         }
 
-        //threaded functions
+        //thread delegates
         private delegate void threadDelegate_update(string message);
-        private delegate void threadDelegate_download(object sender, DownloadProgressChangedEventArgs e);
+        private delegate void threadDelegate_downloadProgress(object sender, DownloadProgressChangedEventArgs e);
+        private delegate void threadDelegate_download(object sender, AsyncCompletedEventArgs e);
+
+        //threaded functions
         private void thread_doneUpdating(string message)
         {
             if (this.lbl_latestBuild.InvokeRequired)
@@ -63,9 +92,9 @@ namespace CNU_CS
         {
             if (this.progress_download.InvokeRequired)
             {
-                threadDelegate_download d = new threadDelegate_download(thread_downloadProgressUpdate);
-                this.progress_download.Invoke(d, sender);
-                this.lbl_downloadProgress.Invoke(d, sender);
+                threadDelegate_downloadProgress d = new threadDelegate_downloadProgress(thread_downloadProgressUpdate);
+                this.progress_download.Invoke(d, sender, e);
+                this.lbl_downloadProgress.Invoke(d, sender, e);
             }
             else
             {
@@ -79,9 +108,24 @@ namespace CNU_CS
 
         private void thread_downloadComplete(object sender, AsyncCompletedEventArgs e)
         {
-            this.btn_downloadUpdate.Text = "Re-Download";
-            this.btn_downloadUpdate.Enabled = true;
-            saveLastDownloaded(this.latest_build);
+            if (this.btn_downloadUpdate.InvokeRequired)
+            {
+                threadDelegate_download d = new threadDelegate_download(thread_downloadComplete);
+                this.btn_downloadUpdate.Invoke(d, sender, e);
+                this.lbl_downloadProgress.Invoke(d, sender, e);
+                this.progress_download.Invoke(d, sender, e);
+                this.btn_cancelDownload.Invoke(d, sender, e);
+
+            }
+            else
+            {
+                this.btn_downloadUpdate.Text = "Re-Download";
+                this.btn_downloadUpdate.Enabled = true;
+                this.lbl_downloadProgress.Text = "";
+                this.btn_cancelDownload.Visible = false;
+                this.progress_download.Value = 0;
+                saveLastDownloaded(this.latest_build);
+            }
         }
 
 
@@ -109,9 +153,8 @@ namespace CNU_CS
             try
             {
                 //make this a changeable setting, in case google changes the url again.
-                Uri latest_url = new Uri("http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST");
                 client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
-                client.DownloadStringAsync(latest_url);
+                client.DownloadStringAsync(new Uri(latest_url));
             }
             catch (Exception err)
             {
@@ -137,7 +180,7 @@ namespace CNU_CS
                 string appPath = Path.GetDirectoryName(Application.ExecutablePath);
                 Uri latest_build = new Uri("http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/"
                     + this.latest_build
-                    //+ "85361"
+                    //+ "85361" //random for testing
                     + "/chrome-win32.zip");
 
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
@@ -145,7 +188,7 @@ namespace CNU_CS
                 client.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
                 
                 //test smaller file
-                //client.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\chrome-win32.zip");
+                //client.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\smaller-test-file.jpg");
             }
             catch (Exception err)
             {
@@ -174,11 +217,11 @@ namespace CNU_CS
             btn_downloadUpdate.Enabled = false;
             btn_cancelDownload.Visible = true;
 
-            downloadUpdate();
+            //downloadUpdate();
 
-            //Thread download = new Thread(downloadUpdate);
-            //download.Name = "Download Update Thread";
-            //download.Start();
+            Thread download = new Thread(downloadUpdate);
+            download.Name = "Download Update Thread";
+            download.Start();
         }
 
         private void btn_cancelDownload_Click(object sender, EventArgs e)

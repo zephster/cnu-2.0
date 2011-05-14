@@ -43,10 +43,13 @@
             this.lbl_downloadProgress = new System.Windows.Forms.Label();
             this.tab_settings = new System.Windows.Forms.TabPage();
             this.lbl_title = new System.Windows.Forms.Label();
+            this.table_settings = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_CNUversion = new System.Windows.Forms.Label();
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
             this.tab_settings.SuspendLayout();
+            this.table_settings.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -168,6 +171,7 @@
             this.group_update.Size = new System.Drawing.Size(160, 176);
             this.group_update.TabIndex = 4;
             this.group_update.TabStop = false;
+            this.group_update.Visible = false;
             // 
             // btn_cancelDownload
             // 
@@ -190,6 +194,7 @@
             // 
             // tab_settings
             // 
+            this.tab_settings.Controls.Add(this.table_settings);
             this.tab_settings.Controls.Add(this.lbl_title);
             this.tab_settings.Location = new System.Drawing.Point(4, 22);
             this.tab_settings.Name = "tab_settings";
@@ -210,6 +215,32 @@
             this.lbl_title.Text = "Chrome\r\nNightly Updater+";
             this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // table_settings
+            // 
+            this.table_settings.ColumnCount = 1;
+            this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.table_settings.Controls.Add(this.lbl_CNUversion, 0, 1);
+            this.table_settings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.table_settings.Location = new System.Drawing.Point(3, 49);
+            this.table_settings.Name = "table_settings";
+            this.table_settings.RowCount = 2;
+            this.table_settings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.table_settings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.table_settings.Size = new System.Drawing.Size(188, 232);
+            this.table_settings.TabIndex = 1;
+            // 
+            // lbl_CNUversion
+            // 
+            this.lbl_CNUversion.AutoSize = true;
+            this.lbl_CNUversion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_CNUversion.Location = new System.Drawing.Point(3, 212);
+            this.lbl_CNUversion.Name = "lbl_CNUversion";
+            this.lbl_CNUversion.Size = new System.Drawing.Size(182, 20);
+            this.lbl_CNUversion.TabIndex = 0;
+            this.lbl_CNUversion.Text = "Version Kush 4.2.0";
+            this.lbl_CNUversion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +259,8 @@
             this.tab_main.ResumeLayout(false);
             this.group_update.ResumeLayout(false);
             this.tab_settings.ResumeLayout(false);
+            this.table_settings.ResumeLayout(false);
+            this.table_settings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -249,6 +282,8 @@
         private System.Windows.Forms.Label lbl_downloadProgress;
         private System.Windows.Forms.Button btn_cancelDownload;
         private System.Windows.Forms.Label lbl_title;
+        private System.Windows.Forms.TableLayoutPanel table_settings;
+        private System.Windows.Forms.Label lbl_CNUversion;
 
     }
 }
