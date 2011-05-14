@@ -58,7 +58,7 @@ namespace CNU_CS
             lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
             client.Headers.Add("UserAgent", "cnup2!");
 
-            //set version in settings
+            //set version in settings tab
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
             lbl_CNUversion.Text = version_info;
