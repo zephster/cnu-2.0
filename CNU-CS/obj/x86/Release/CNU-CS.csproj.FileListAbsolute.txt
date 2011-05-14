@@ -16,3 +16,4 @@ C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Rel
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\GenerateResource.write.1.tlog
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\Chrome Nightly Updater 2.0.exe
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\Chrome Nightly Updater 2.0.pdb
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\Chrome Nightly Updater 2.0.exe.config

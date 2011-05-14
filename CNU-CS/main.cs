@@ -15,6 +15,7 @@ using System.Threading;
 //http://www.developerfusion.com/article/4637/retrieving-http-content-in-net/2/
 //http://www.csharp-examples.net/xml-nodes-by-name/
 //http://support.microsoft.com/kb/307643
+//http://msdn.microsoft.com/en-us/library/aa730869%28v=vs.80%29.aspx - settings file (for options)
 
 /*
  * ideas:
@@ -31,54 +32,92 @@ namespace CNU_CS
     {
 
         private static WebClient client = new WebClient();
+        //change to proper int type later!
+        public string latest_build;
+        public string last_downloaded;
 
         public main()
         {
             InitializeComponent();
+            lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
+            client.Headers.Add("UserAgent", "cnup2!");
         }
 
         //threaded functions
-        private delegate void ThreadSafeMethodCallDelegate(string message);
-        private void thread_setLatestVersion(string message)
+        private delegate void threadDelegate_update(string message);
+        private delegate void threadDelegate_download(object sender, DownloadProgressChangedEventArgs e);
+        private void thread_doneUpdating(string message)
         {
-            if (this.lbl_lastDownloaded.InvokeRequired)
+            if (this.lbl_latestBuild.InvokeRequired)
             {
-                ThreadSafeMethodCallDelegate d = new ThreadSafeMethodCallDelegate(thread_setLatestVersion);
-                this.lbl_lastDownloaded.Invoke(d, message);
+                threadDelegate_update d = new threadDelegate_update(thread_doneUpdating);
+                this.lbl_latestBuild.Invoke(d, message);
                 this.btn_checkUpdate.Invoke(d, message);
+                this.group_update.Invoke(d, message);
             }
             else
             {
-                this.lbl_lastDownloaded.Text = message;
+                this.lbl_latestBuild.Text = message;
                 this.btn_checkUpdate.Text = "Check for Update";
                 this.btn_checkUpdate.Enabled = true;
+                this.group_update.Visible = true;
+                this.latest_build = message;
             }
         }
+
+        private void thread_downloadProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if (this.progress_download.InvokeRequired)
+            {
+                threadDelegate_download d = new threadDelegate_download(thread_downloadProgressUpdate);
+                this.progress_download.Invoke(d, sender);
+                this.lbl_downloadProgress.Invoke(d, sender);
+            }
+            else
+            {
+                long bytes = e.BytesReceived / 1024;
+                long totalBytes = e.TotalBytesToReceive / 1024;
+
+                this.progress_download.Value = e.ProgressPercentage;
+                this.lbl_downloadProgress.Text = bytes + "kb / " + totalBytes + "kb";
+            }
+        }
+
+        private void thread_downloadComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            this.btn_downloadUpdate.Text = "Re-Download";
+            this.btn_downloadUpdate.Enabled = true;
+            saveLastDownloaded(this.latest_build);
+        }
+
+
 
 
 
         //callbacks        
-        void updateCallback(object sender, DownloadStringCompletedEventArgs e)
+        void checkUpdateCallback(object sender, DownloadStringCompletedEventArgs e)
         {
             string latest_version = e.Result;
-            thread_setLatestVersion(e.Result);
+            thread_doneUpdating(e.Result);
+        }
+
+        private void saveLastDownloaded(string version)
+        {
+            Properties.Settings.Default.last_downloaded = version;
+            Properties.Settings.Default.Save();
         }
 
 
 
-
-        //functions - thread 'update'
+        //functions
         private void checkForUpdate()
         {
             try
             {
                 //make this a changeable setting, in case google changes the url again.
                 Uri latest_url = new Uri("http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST");
-
-                client.Headers.Add("UserAgent", "cnup2");
-                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(updateCallback);
+                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
                 client.DownloadStringAsync(latest_url);
-                //client.DownloadFileAsync(latest_url, @"C:\Users\brandon\Desktop\grinders\latest");
             }
             catch (Exception err)
             {
@@ -100,6 +139,25 @@ namespace CNU_CS
         private void downloadUpdate()
         {
             //actually download the update, and show progress bar and speed if possible
+            //http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/" & lblLatest & "/chrome-win32.zip
+            try
+            {
+                string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+                Uri latest_build = new Uri("http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/"
+                    //+ this.latest_build
+                    + "85361"
+                    + "/chrome-win32.zip");
+
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
+                client.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                //client.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\chrome-win32.zip");
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Error downloading update, oh my!\n" + err.Message, err);
+            }
+            
         }
 
 
@@ -112,7 +170,29 @@ namespace CNU_CS
 
             //new thread
             Thread update = new Thread(checkForUpdate);
+            update.Name = "Update Check Thread";
             update.Start();
         }
+
+        private void btn_downloadUpdate_Click(object sender, EventArgs e)
+        {
+            btn_downloadUpdate.Text = "Downloading...";
+            btn_downloadUpdate.Enabled = false;
+            btn_cancelDownload.Visible = true;
+
+            downloadUpdate();
+
+            //Thread download = new Thread(downloadUpdate);
+            //download.Name = "Download Update Thread";
+            //download.Start();
+        }
+
+        private void btn_cancelDownload_Click(object sender, EventArgs e)
+        {
+            client.CancelAsync();
+            progress_download.Value = 0;
+            btn_cancelDownload.Visible = false;
+        }
+
     }
 }
