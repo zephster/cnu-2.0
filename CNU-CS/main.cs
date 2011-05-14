@@ -59,8 +59,9 @@ namespace CNU_CS
             client.Headers.Add("UserAgent", "cnup2!");
 
             //set version in settings
-
-
+            object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            string version_info = v.ToString();
+            lbl_CNUversion.Text = version_info;
         }
 
         //thread delegates
