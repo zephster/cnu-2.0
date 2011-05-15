@@ -36,6 +36,7 @@ using System.Threading;
  *      keep x number of past copies
  *      auto-unzip
  *      update checker/downloader/updater for cnu
+ *      calculate download progress speed in kb/s
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
  *      
  * notes to future self
@@ -53,34 +54,24 @@ namespace CNU_CS
 {
     public partial class main : Form
     {
-
-        private static WebClient client_update = new WebClient();
+        private static WebClient client_checkForChromeUpdate = new WebClient();
         private static WebClient client_download = new WebClient();
-
-        private static WebClient client_1 = new WebClient();
-        private static WebClient client_2 = new WebClient();
-        private static WebClient client_3 = new WebClient();
-        private static WebClient client_4 = new WebClient();
+        private static WebClient client_downloadProgressUpdate = new WebClient();
 
         //public int latets_build;
         //public int last_downloaded;
         public string latest_build = "84202"; //can use 84202 to test
-        public string last_downloaded;
+        public string last_downloaded = Properties.Settings.Default.last_downloaded;
+        public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
+        public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
         public bool backup_enabled;
         public int backup_copies;
 
         public main()
         {
             InitializeComponent();
-            lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
-
-            object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            string version_info = v.ToString();
-            lbl_CNUversion.Text = "version " + version_info;
-            lbl_latestBuild.Text = latest_build;
         }
-
 
         //thread delegates
         private delegate void threadDelegate_update(string message);
@@ -89,11 +80,6 @@ namespace CNU_CS
         private delegate void threadDelegate_changelog(string changelog);
 
         //threaded functions
-        private string test(string state)
-        {
-            return state;
-        }
-
         private void thread_doneUpdating(string message)
         {
             if (this.lbl_latestBuild.InvokeRequired)
@@ -117,7 +103,6 @@ namespace CNU_CS
                 //    Console.WriteLine("-----\nthread_doneUpdating HACKFIX - this should not be run when viewing changelog, and is causing the latest build label over-write\n" + err.Message + "\n-----");
                 //    return;
                 //}
-
 
                 this.lbl_latestBuild.Text = message;
                 this.btn_checkUpdate.Text = "Check for Update";
@@ -228,6 +213,11 @@ namespace CNU_CS
             Properties.Settings.Default.last_downloaded = version;
             Properties.Settings.Default.Save();
         }
+        private void saveAutoCheck(bool autocheck)
+        {
+            Properties.Settings.Default.auto_check = autocheck;
+            Properties.Settings.Default.Save();
+        }
 
 
         //functions
@@ -235,8 +225,8 @@ namespace CNU_CS
         {
             try
             {
-                client_1.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
-                client_1.DownloadStringAsync(new Uri(latest_url));
+                client_checkForChromeUpdate.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
+                client_checkForChromeUpdate.DownloadStringAsync(new Uri(latest_url));
             }
             catch (Exception err)
             {
@@ -252,8 +242,8 @@ namespace CNU_CS
                         + this.latest_build +
                         "/changelog.xml");
                 //debug
-                client_2.DownloadStringCompleted += new DownloadStringCompletedEventHandler(changelogCallback);
-                client_2.DownloadStringAsync(changelog_url);
+                client_download.DownloadStringCompleted += new DownloadStringCompletedEventHandler(changelogCallback);
+                client_download.DownloadStringAsync(changelog_url);
             } catch (Exception err){
                 throw new Exception("Error finding changelog, oh my!\n" + err.Message, err);
             }
@@ -263,15 +253,14 @@ namespace CNU_CS
         {
             try
             {
-                string appPath = Path.GetDirectoryName(Application.ExecutablePath);
                 Uri latest_build = new Uri("http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/"
                     + this.latest_build
                     //+ "85361" //random for testing
                     + "/chrome-win32.zip");
 
-                client_3.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
-                client_3.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
-                client_3.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                client_downloadProgressUpdate.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
+                client_downloadProgressUpdate.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
+                client_downloadProgressUpdate.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
                 
                 //test smaller file
                 //client_download.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\smaller-test-file.jpg");
@@ -312,9 +301,12 @@ namespace CNU_CS
 
         private void btn_cancelDownload_Click(object sender, EventArgs e)
         {
-            client_3.CancelAsync();
+            client_downloadProgressUpdate.CancelAsync();
             progress_download.Value = 0;
             btn_cancelDownload.Visible = false;
+
+            //delete incomplete file
+            //File.Delete(appPath + @"\chrome-win32-" + this.latest_build + ".zip");
         }
 
         private void btn_viewChangelog_Click(object sender, EventArgs e)
@@ -356,6 +348,28 @@ namespace CNU_CS
                 }
 
                 
+            }
+        }
+
+        private void chk_autoCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            saveAutoCheck(chk_autoCheck.Checked);
+        }
+
+        private void main_Load(object sender, EventArgs e)
+        {
+            lbl_lastDownloaded.Text = last_downloaded;
+            chk_autoCheck.Checked = auto_checkUpdate;
+
+            object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            string version_info = v.ToString();
+            lbl_CNUversion.Text = "version " + version_info;
+            lbl_latestBuild.Text = latest_build;
+
+            if (auto_checkUpdate)
+            {
+                Console.WriteLine("auto-checking for chrome updates");
+                btn_checkUpdate.PerformClick();
             }
         }
     }

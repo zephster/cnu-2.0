@@ -327,7 +327,7 @@
             this.chk_backupEnable.AutoSize = true;
             this.chk_backupEnable.Location = new System.Drawing.Point(8, 16);
             this.chk_backupEnable.Name = "chk_backupEnable";
-            this.chk_backupEnable.Size = new System.Drawing.Size(150, 17);
+            this.chk_backupEnable.Size = new System.Drawing.Size(147, 17);
             this.chk_backupEnable.TabIndex = 3;
             this.chk_backupEnable.Text = "Enable managed backups";
             this.chk_backupEnable.UseVisualStyleBackColor = true;
@@ -338,10 +338,11 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(16, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
+            this.chk_autoCheck.CheckedChanged += new System.EventHandler(this.chk_autoCheck_CheckedChanged);
             // 
             // lbl_title
             // 
@@ -368,6 +369,7 @@
             this.Padding = new System.Windows.Forms.Padding(10);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CNU 2.0";
+            this.Load += new System.EventHandler(this.main_Load);
             this.gui_tabs.ResumeLayout(false);
             this.tab_main.ResumeLayout(false);
             this.group_update.ResumeLayout(false);

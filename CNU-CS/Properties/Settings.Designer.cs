@@ -34,5 +34,17 @@ namespace CNU_CS.Properties {
                 this["last_downloaded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool auto_check {
+            get {
+                return ((bool)(this["auto_check"]));
+            }
+            set {
+                this["auto_check"] = value;
+            }
+        }
     }
 }
