@@ -47,13 +47,13 @@
             this.table_settings = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_CNUversion = new System.Windows.Forms.Label();
             this.group_options = new System.Windows.Forms.GroupBox();
+            this.chk_autoUnzip = new System.Windows.Forms.CheckBox();
             this.group_backups = new System.Windows.Forms.GroupBox();
             this.txt_backupNumCopies = new System.Windows.Forms.TextBox();
             this.lbl_numBackupCopies = new System.Windows.Forms.Label();
             this.chk_backupEnable = new System.Windows.Forms.CheckBox();
             this.chk_autoCheck = new System.Windows.Forms.CheckBox();
             this.lbl_title = new System.Windows.Forms.Label();
-            this.chk_autoUnzip = new System.Windows.Forms.CheckBox();
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
@@ -280,6 +280,15 @@
             this.group_options.TabIndex = 1;
             this.group_options.TabStop = false;
             // 
+            // chk_autoUnzip
+            // 
+            this.chk_autoUnzip.Location = new System.Drawing.Point(16, 40);
+            this.chk_autoUnzip.Name = "chk_autoUnzip";
+            this.chk_autoUnzip.Size = new System.Drawing.Size(78, 17);
+            this.chk_autoUnzip.TabIndex = 3;
+            this.chk_autoUnzip.Text = "Auto-unzip";
+            this.chk_autoUnzip.UseVisualStyleBackColor = true;
+            // 
             // group_backups
             // 
             this.group_backups.Controls.Add(this.txt_backupNumCopies);
@@ -318,7 +327,7 @@
             this.chk_backupEnable.AutoSize = true;
             this.chk_backupEnable.Location = new System.Drawing.Point(8, 16);
             this.chk_backupEnable.Name = "chk_backupEnable";
-            this.chk_backupEnable.Size = new System.Drawing.Size(147, 17);
+            this.chk_backupEnable.Size = new System.Drawing.Size(150, 17);
             this.chk_backupEnable.TabIndex = 3;
             this.chk_backupEnable.Text = "Enable managed backups";
             this.chk_backupEnable.UseVisualStyleBackColor = true;
@@ -329,7 +338,7 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(16, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
@@ -344,16 +353,6 @@
             this.lbl_title.TabIndex = 0;
             this.lbl_title.Text = "Chrome\r\nNightly Updater+";
             this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // chk_autoUnzip
-            // 
-            this.chk_autoUnzip.AutoSize = true;
-            this.chk_autoUnzip.Location = new System.Drawing.Point(16, 40);
-            this.chk_autoUnzip.Name = "chk_autoUnzip";
-            this.chk_autoUnzip.Size = new System.Drawing.Size(78, 17);
-            this.chk_autoUnzip.TabIndex = 3;
-            this.chk_autoUnzip.Text = "Auto-unzip";
-            this.chk_autoUnzip.UseVisualStyleBackColor = true;
             // 
             // main
             // 

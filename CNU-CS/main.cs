@@ -37,6 +37,15 @@ using System.Threading;
  *      auto-unzip
  *      update checker/downloader/updater for cnu
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
+ *      
+ * notes to future self
+ *      settings tab may have to make window wider and put another tab group for advanced options
+ *      adv. options: URIs for chrome LATEST, changelog, and binary
+ *      adv. options: maybe a manual override for "latest downloaded"
+ *      check for cnup update in advanced?
+ *      
+ * known bugs - seriously wtf is up with this shit i can't figure these out:
+ *      clicking view changelog multiple times re-runs the callback function +1.
  */
 
 
@@ -45,10 +54,17 @@ namespace CNU_CS
     public partial class main : Form
     {
 
-        private static WebClient client = new WebClient();
+        private static WebClient client_update = new WebClient();
+        private static WebClient client_download = new WebClient();
+
+        private static WebClient client_1 = new WebClient();
+        private static WebClient client_2 = new WebClient();
+        private static WebClient client_3 = new WebClient();
+        private static WebClient client_4 = new WebClient();
+
         //public int latets_build;
         //public int last_downloaded;
-        public string latest_build = "00000";
+        public string latest_build = "84202"; //can use 84202 to test
         public string last_downloaded;
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
         public bool backup_enabled;
@@ -58,7 +74,6 @@ namespace CNU_CS
         {
             InitializeComponent();
             lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
-            client.Headers.Add("UserAgent", "cnup2!");
 
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
@@ -74,17 +89,36 @@ namespace CNU_CS
         private delegate void threadDelegate_changelog(string changelog);
 
         //threaded functions
+        private string test(string state)
+        {
+            return state;
+        }
+
         private void thread_doneUpdating(string message)
         {
             if (this.lbl_latestBuild.InvokeRequired)
             {
                 threadDelegate_update d = new threadDelegate_update(thread_doneUpdating);
                 this.lbl_latestBuild.Invoke(d, message);
-                this.btn_checkUpdate.Invoke(d, message);
-                this.group_update.Invoke(d, message);
+                //this.btn_checkUpdate.Invoke(d, message);
+                //this.group_update.Invoke(d, message);
             }
             else
             {
+                //this whole try/catch is a hackfix
+                //try
+                //{
+                //    int message_int = Convert.ToInt32(message);
+                //    message_int = int.Parse(message);
+                //    Console.WriteLine("thread_doneUpdating - " + message);
+                //}
+                //catch (Exception err)
+                //{
+                //    Console.WriteLine("-----\nthread_doneUpdating HACKFIX - this should not be run when viewing changelog, and is causing the latest build label over-write\n" + err.Message + "\n-----");
+                //    return;
+                //}
+
+
                 this.lbl_latestBuild.Text = message;
                 this.btn_checkUpdate.Text = "Check for Update";
                 this.btn_checkUpdate.Enabled = true;
@@ -150,37 +184,43 @@ namespace CNU_CS
 
 
         //callbacks        
-        void checkUpdateCallback(object sender, DownloadStringCompletedEventArgs e)
+        private void checkUpdateCallback(object sender, DownloadStringCompletedEventArgs e)
         {
+            //this is being fired when viewing changelog. what the fuck?!
             thread_doneUpdating(e.Result);
+            Console.WriteLine("checkUpdateCallback - should only be seen when checking for chrome updates");
         }
         private void changelogCallback(object sender, DownloadStringCompletedEventArgs e)
         {
-            StringBuilder changelog = new StringBuilder();
+            Console.WriteLine("changelogCallback - before parsing the changelog xml");
             string xml = e.Result;
-
-            using (XmlReader parser = XmlReader.Create(new StringReader(xml)))
+            try
             {
-                parser.ReadToFollowing("author");
-                string xml_author = parser.ReadElementContentAsString();
+                using (XmlReader parser = XmlReader.Create(new StringReader(xml)))
+                {
+                    parser.ReadToFollowing("author");
+                    string xml_author = parser.ReadElementContentAsString();
 
-                parser.ReadToFollowing("date");
-                string xml_date = parser.ReadElementContentAsString();
+                    parser.ReadToFollowing("date");
+                    string xml_date = parser.ReadElementContentAsString();
 
-                parser.ReadToFollowing("msg");
-                string xml_msg = parser.ReadElementContentAsString();
+                    parser.ReadToFollowing("msg");
+                    string xml_msg = parser.ReadElementContentAsString();
 
-                //gaps in new lines
-                xml_msg = xml_msg.Replace("\n\n", "\n");
-                xml_msg = xml_msg.Replace("\n\n\n", "\n");
-                xml_msg = xml_msg.Replace("\n\n\n\n", "\n");
+                    //gaps in new lines
+                    xml_msg = xml_msg.Replace("\n\n", "\n");
+                    xml_msg = xml_msg.Replace("\n\n\n", "\n");
+                    xml_msg = xml_msg.Replace("\n\n\n\n", "\n");
 
-                string changelog_complete = "author:\n" + xml_author
-                    + "\n\ndate:\n" + xml_date
-                    + "\n\nmessage:\n" + xml_msg;
+                    string changelog_complete = "author:\n" + xml_author
+                        + "\n\ndate:\n" + xml_date
+                        + "\n\nmessage:\n" + xml_msg;
 
-                //Console.WriteLine(changelog_complete);
-                thread_changelogComplete(changelog_complete);
+                    Console.WriteLine("changelog xml parsed, results:\n" + changelog_complete);
+                    thread_changelogComplete(changelog_complete);
+                }
+            } catch (Exception err){
+                throw new Exception("Uh oh! " + err.Message);
             }
         }
         private void saveLastDownloaded(string version)
@@ -195,8 +235,8 @@ namespace CNU_CS
         {
             try
             {
-                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
-                client.DownloadStringAsync(new Uri(latest_url));
+                client_1.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
+                client_1.DownloadStringAsync(new Uri(latest_url));
             }
             catch (Exception err)
             {
@@ -209,11 +249,11 @@ namespace CNU_CS
         {
             try{
                 Uri changelog_url = new Uri("http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/"
-                        + latest_build +
+                        + this.latest_build +
                         "/changelog.xml");
-                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(changelogCallback);
-                client.DownloadStringAsync(changelog_url);
-                
+                //debug
+                client_2.DownloadStringCompleted += new DownloadStringCompletedEventHandler(changelogCallback);
+                client_2.DownloadStringAsync(changelog_url);
             } catch (Exception err){
                 throw new Exception("Error finding changelog, oh my!\n" + err.Message, err);
             }
@@ -229,12 +269,12 @@ namespace CNU_CS
                     //+ "85361" //random for testing
                     + "/chrome-win32.zip");
 
-                client.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
-                client.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                client_3.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
+                client_3.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
+                client_3.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
                 
                 //test smaller file
-                //client.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\smaller-test-file.jpg");
+                //client_download.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\smaller-test-file.jpg");
             }
             catch (Exception err)
             {
@@ -272,7 +312,7 @@ namespace CNU_CS
 
         private void btn_cancelDownload_Click(object sender, EventArgs e)
         {
-            client.CancelAsync();
+            client_3.CancelAsync();
             progress_download.Value = 0;
             btn_cancelDownload.Visible = false;
         }
@@ -281,12 +321,13 @@ namespace CNU_CS
         {
             gui_tabs.SelectedTab = tab_changelog;
             txt_changelog.Text = "Loading...";
+            //widen width of window
 
             //viewChangelog();
 
-            Thread changelog = new Thread(viewChangelog);
-            changelog.Name = "View Changelog Thread";
-            changelog.Start();
+            Thread changelog_thread = new Thread(viewChangelog);
+            changelog_thread.Name = "View Changelog Thread";
+            changelog_thread.Start();
         }
 
         private void chk_backupEnable_CheckedChanged(object sender, EventArgs e)
@@ -300,6 +341,7 @@ namespace CNU_CS
         {
             if (backup_enabled)
             {
+                //need to check for null or blank cause if they backspace it'll throw
                 try
                 {
                     backup_copies = Convert.ToInt32(txt_backupNumCopies.Text);
@@ -308,6 +350,7 @@ namespace CNU_CS
                 }
                 catch (Exception)
                 {
+                    //i don't like this method. i want to just delete the invalid character
                     MessageBox.Show("Oops! Numbers only, please.");
                     txt_backupNumCopies.Text = "5";
                 }
@@ -315,6 +358,5 @@ namespace CNU_CS
                 
             }
         }
-
     }
 }
