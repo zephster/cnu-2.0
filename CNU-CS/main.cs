@@ -30,7 +30,7 @@ using System.Threading;
 
 /*
  * todo:
- *      changelog
+ *      changelog - DONE!
  *      settings tab
  *      option to auto-check on startup
  *      keep x number of past copies
@@ -48,7 +48,7 @@ namespace CNU_CS
         private static WebClient client = new WebClient();
         //public int latets_build;
         //public int last_downloaded;
-        public string latest_build;
+        public string latest_build = "00000";
         public string last_downloaded;
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
 
@@ -58,16 +58,18 @@ namespace CNU_CS
             lbl_lastDownloaded.Text = Properties.Settings.Default.last_downloaded;
             client.Headers.Add("UserAgent", "cnup2!");
 
-            //set version in settings tab
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
             lbl_CNUversion.Text = version_info;
+            lbl_latestBuild.Text = latest_build;
         }
+
 
         //thread delegates
         private delegate void threadDelegate_update(string message);
         private delegate void threadDelegate_downloadProgress(object sender, DownloadProgressChangedEventArgs e);
         private delegate void threadDelegate_download(object sender, AsyncCompletedEventArgs e);
+        private delegate void threadDelegate_changelog(string changelog);
 
         //threaded functions
         private void thread_doneUpdating(string message)
@@ -128,6 +130,18 @@ namespace CNU_CS
                 saveLastDownloaded(this.latest_build);
             }
         }
+        private void thread_changelogComplete(string changelog)
+        {
+            if (this.txt_changelog.InvokeRequired)
+            {
+                threadDelegate_changelog d = new threadDelegate_changelog(thread_changelogComplete);
+                this.txt_changelog.Invoke(d, changelog);
+            }
+            else
+            {
+                this.txt_changelog.Text = changelog;
+            }
+        }
 
 
 
@@ -136,10 +150,37 @@ namespace CNU_CS
         //callbacks        
         void checkUpdateCallback(object sender, DownloadStringCompletedEventArgs e)
         {
-            string latest_version = e.Result;
             thread_doneUpdating(e.Result);
         }
+        private void changelogCallback(object sender, DownloadStringCompletedEventArgs e)
+        {
+            StringBuilder changelog = new StringBuilder();
+            string xml = e.Result;
 
+            using (XmlReader parser = XmlReader.Create(new StringReader(xml)))
+            {
+                parser.ReadToFollowing("author");
+                string xml_author = parser.ReadElementContentAsString();
+
+                parser.ReadToFollowing("date");
+                string xml_date = parser.ReadElementContentAsString();
+
+                parser.ReadToFollowing("msg");
+                string xml_msg = parser.ReadElementContentAsString();
+
+                //gaps in new lines
+                xml_msg = xml_msg.Replace("\n\n", "\n");
+                xml_msg = xml_msg.Replace("\n\n\n", "\n");
+                xml_msg = xml_msg.Replace("\n\n\n\n", "\n");
+
+                string changelog_complete = "author:\n" + xml_author
+                    + "\n\ndate:\n" + xml_date
+                    + "\n\nmessage:\n" + xml_msg;
+
+                //Console.WriteLine(changelog_complete);
+                thread_changelogComplete(changelog_complete);
+            }
+        }
         private void saveLastDownloaded(string version)
         {
             Properties.Settings.Default.last_downloaded = version;
@@ -147,13 +188,11 @@ namespace CNU_CS
         }
 
 
-
         //functions
         private void checkForUpdate()
         {
             try
             {
-                //make this a changeable setting, in case google changes the url again.
                 client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
                 client.DownloadStringAsync(new Uri(latest_url));
             }
@@ -163,15 +202,19 @@ namespace CNU_CS
             }
         }
 
-        /// <summary>
-        /// 	System.Xml.XmlDocument doc = new XmlDocument() ;
-	    ///     doc.Load("changelog.xml");
-	    ///     Console.WriteLine(doc.OuterXml );
-	    ///     Console.ReadLine();
-        /// </summary>
+
         private void viewChangelog()
         {
-            //retreives XML for the changelog from current version in LATEST
+            try{
+                Uri changelog_url = new Uri("http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/"
+                        + latest_build +
+                        "/changelog.xml");
+                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(changelogCallback);
+                client.DownloadStringAsync(changelog_url);
+                
+            } catch (Exception err){
+                throw new Exception("Error finding changelog, oh my!\n" + err.Message, err);
+            }
         }
 
         private void downloadUpdate()
@@ -230,6 +273,18 @@ namespace CNU_CS
             client.CancelAsync();
             progress_download.Value = 0;
             btn_cancelDownload.Visible = false;
+        }
+
+        private void btn_viewChangelog_Click(object sender, EventArgs e)
+        {
+            gui_tabs.SelectedTab = tab_changelog;
+            txt_changelog.Text = "Loading...";
+
+            //viewChangelog();
+
+            Thread changelog = new Thread(viewChangelog);
+            changelog.Name = "View Changelog Thread";
+            changelog.Start();
         }
 
     }

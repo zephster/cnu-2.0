@@ -25,7 +25,7 @@ namespace CNU_CS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("000000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000")]
         public string last_downloaded {
             get {
                 return ((string)(this["last_downloaded"]));

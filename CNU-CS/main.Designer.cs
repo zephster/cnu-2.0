@@ -42,14 +42,20 @@
             this.btn_cancelDownload = new System.Windows.Forms.Button();
             this.lbl_downloadProgress = new System.Windows.Forms.Label();
             this.tab_settings = new System.Windows.Forms.TabPage();
-            this.lbl_title = new System.Windows.Forms.Label();
             this.table_settings = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_CNUversion = new System.Windows.Forms.Label();
+            this.lbl_title = new System.Windows.Forms.Label();
+            this.tab_changelog = new System.Windows.Forms.TabPage();
+            this.txt_changelog = new System.Windows.Forms.RichTextBox();
+            this.group_options = new System.Windows.Forms.GroupBox();
+            this.chk_autoCheck = new System.Windows.Forms.CheckBox();
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
             this.tab_settings.SuspendLayout();
             this.table_settings.SuspendLayout();
+            this.tab_changelog.SuspendLayout();
+            this.group_options.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -113,6 +119,7 @@
             this.btn_viewChangelog.TabIndex = 2;
             this.btn_viewChangelog.Text = "View Changelog";
             this.btn_viewChangelog.UseVisualStyleBackColor = true;
+            this.btn_viewChangelog.Click += new System.EventHandler(this.btn_viewChangelog_Click);
             // 
             // btn_downloadUpdate
             // 
@@ -135,6 +142,7 @@
             // gui_tabs
             // 
             this.gui_tabs.Controls.Add(this.tab_main);
+            this.gui_tabs.Controls.Add(this.tab_changelog);
             this.gui_tabs.Controls.Add(this.tab_settings);
             this.gui_tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gui_tabs.Location = new System.Drawing.Point(10, 10);
@@ -204,23 +212,13 @@
             this.tab_settings.Text = "Settings";
             this.tab_settings.UseVisualStyleBackColor = true;
             // 
-            // lbl_title
-            // 
-            this.lbl_title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lbl_title.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_title.Location = new System.Drawing.Point(3, 3);
-            this.lbl_title.Name = "lbl_title";
-            this.lbl_title.Size = new System.Drawing.Size(188, 46);
-            this.lbl_title.TabIndex = 0;
-            this.lbl_title.Text = "Chrome\r\nNightly Updater+";
-            this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // table_settings
             // 
             this.table_settings.ColumnCount = 1;
             this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.table_settings.Controls.Add(this.lbl_CNUversion, 0, 1);
+            this.table_settings.Controls.Add(this.group_options, 0, 0);
             this.table_settings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.table_settings.Location = new System.Drawing.Point(3, 49);
             this.table_settings.Name = "table_settings";
@@ -240,6 +238,59 @@
             this.lbl_CNUversion.TabIndex = 0;
             this.lbl_CNUversion.Text = "Version Kush 4.2.0";
             this.lbl_CNUversion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_title
+            // 
+            this.lbl_title.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbl_title.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_title.Location = new System.Drawing.Point(3, 3);
+            this.lbl_title.Name = "lbl_title";
+            this.lbl_title.Size = new System.Drawing.Size(188, 46);
+            this.lbl_title.TabIndex = 0;
+            this.lbl_title.Text = "Chrome\r\nNightly Updater+";
+            this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tab_changelog
+            // 
+            this.tab_changelog.Controls.Add(this.txt_changelog);
+            this.tab_changelog.Location = new System.Drawing.Point(4, 22);
+            this.tab_changelog.Name = "tab_changelog";
+            this.tab_changelog.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_changelog.Size = new System.Drawing.Size(194, 284);
+            this.tab_changelog.TabIndex = 2;
+            this.tab_changelog.Text = "Changelog";
+            this.tab_changelog.UseVisualStyleBackColor = true;
+            // 
+            // txt_changelog
+            // 
+            this.txt_changelog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt_changelog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_changelog.Location = new System.Drawing.Point(3, 3);
+            this.txt_changelog.Name = "txt_changelog";
+            this.txt_changelog.ReadOnly = true;
+            this.txt_changelog.Size = new System.Drawing.Size(188, 278);
+            this.txt_changelog.TabIndex = 1;
+            this.txt_changelog.Text = "Nothing here!\nCheck for updates first.";
+            // 
+            // group_options
+            // 
+            this.group_options.Controls.Add(this.chk_autoCheck);
+            this.group_options.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.group_options.Location = new System.Drawing.Point(3, 3);
+            this.group_options.Name = "group_options";
+            this.group_options.Size = new System.Drawing.Size(182, 206);
+            this.group_options.TabIndex = 1;
+            this.group_options.TabStop = false;
+            // 
+            // chk_autoCheck
+            // 
+            this.chk_autoCheck.AutoSize = true;
+            this.chk_autoCheck.Location = new System.Drawing.Point(8, 24);
+            this.chk_autoCheck.Name = "chk_autoCheck";
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
+            this.chk_autoCheck.TabIndex = 1;
+            this.chk_autoCheck.Text = "Auto Check on Startup";
+            this.chk_autoCheck.UseVisualStyleBackColor = true;
             // 
             // main
             // 
@@ -261,6 +312,9 @@
             this.tab_settings.ResumeLayout(false);
             this.table_settings.ResumeLayout(false);
             this.table_settings.PerformLayout();
+            this.tab_changelog.ResumeLayout(false);
+            this.group_options.ResumeLayout(false);
+            this.group_options.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -284,6 +338,10 @@
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.TableLayoutPanel table_settings;
         private System.Windows.Forms.Label lbl_CNUversion;
+        private System.Windows.Forms.TabPage tab_changelog;
+        private System.Windows.Forms.RichTextBox txt_changelog;
+        private System.Windows.Forms.GroupBox group_options;
+        private System.Windows.Forms.CheckBox chk_autoCheck;
 
     }
 }
