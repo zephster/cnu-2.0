@@ -41,21 +41,27 @@
             this.group_update = new System.Windows.Forms.GroupBox();
             this.btn_cancelDownload = new System.Windows.Forms.Button();
             this.lbl_downloadProgress = new System.Windows.Forms.Label();
+            this.tab_changelog = new System.Windows.Forms.TabPage();
+            this.txt_changelog = new System.Windows.Forms.RichTextBox();
             this.tab_settings = new System.Windows.Forms.TabPage();
             this.table_settings = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_CNUversion = new System.Windows.Forms.Label();
-            this.lbl_title = new System.Windows.Forms.Label();
-            this.tab_changelog = new System.Windows.Forms.TabPage();
-            this.txt_changelog = new System.Windows.Forms.RichTextBox();
             this.group_options = new System.Windows.Forms.GroupBox();
+            this.group_backups = new System.Windows.Forms.GroupBox();
+            this.txt_backupNumCopies = new System.Windows.Forms.TextBox();
+            this.lbl_numBackupCopies = new System.Windows.Forms.Label();
+            this.chk_backupEnable = new System.Windows.Forms.CheckBox();
             this.chk_autoCheck = new System.Windows.Forms.CheckBox();
+            this.lbl_title = new System.Windows.Forms.Label();
+            this.chk_autoUnzip = new System.Windows.Forms.CheckBox();
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
+            this.tab_changelog.SuspendLayout();
             this.tab_settings.SuspendLayout();
             this.table_settings.SuspendLayout();
-            this.tab_changelog.SuspendLayout();
             this.group_options.SuspendLayout();
+            this.group_backups.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -200,6 +206,28 @@
             this.lbl_downloadProgress.TabIndex = 4;
             this.lbl_downloadProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tab_changelog
+            // 
+            this.tab_changelog.Controls.Add(this.txt_changelog);
+            this.tab_changelog.Location = new System.Drawing.Point(4, 22);
+            this.tab_changelog.Name = "tab_changelog";
+            this.tab_changelog.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_changelog.Size = new System.Drawing.Size(194, 284);
+            this.tab_changelog.TabIndex = 2;
+            this.tab_changelog.Text = "Changelog";
+            this.tab_changelog.UseVisualStyleBackColor = true;
+            // 
+            // txt_changelog
+            // 
+            this.txt_changelog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt_changelog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_changelog.Location = new System.Drawing.Point(3, 3);
+            this.txt_changelog.Name = "txt_changelog";
+            this.txt_changelog.ReadOnly = true;
+            this.txt_changelog.Size = new System.Drawing.Size(188, 278);
+            this.txt_changelog.TabIndex = 1;
+            this.txt_changelog.Text = "Nothing here!\nCheck for updates first.";
+            // 
             // tab_settings
             // 
             this.tab_settings.Controls.Add(this.table_settings);
@@ -231,6 +259,7 @@
             // lbl_CNUversion
             // 
             this.lbl_CNUversion.AutoSize = true;
+            this.lbl_CNUversion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbl_CNUversion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_CNUversion.Location = new System.Drawing.Point(3, 212);
             this.lbl_CNUversion.Name = "lbl_CNUversion";
@@ -238,6 +267,72 @@
             this.lbl_CNUversion.TabIndex = 0;
             this.lbl_CNUversion.Text = "Version Kush 4.2.0";
             this.lbl_CNUversion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // group_options
+            // 
+            this.group_options.Controls.Add(this.chk_autoUnzip);
+            this.group_options.Controls.Add(this.group_backups);
+            this.group_options.Controls.Add(this.chk_autoCheck);
+            this.group_options.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.group_options.Location = new System.Drawing.Point(3, 3);
+            this.group_options.Name = "group_options";
+            this.group_options.Size = new System.Drawing.Size(182, 206);
+            this.group_options.TabIndex = 1;
+            this.group_options.TabStop = false;
+            // 
+            // group_backups
+            // 
+            this.group_backups.Controls.Add(this.txt_backupNumCopies);
+            this.group_backups.Controls.Add(this.lbl_numBackupCopies);
+            this.group_backups.Controls.Add(this.chk_backupEnable);
+            this.group_backups.Location = new System.Drawing.Point(8, 128);
+            this.group_backups.Name = "group_backups";
+            this.group_backups.Size = new System.Drawing.Size(168, 68);
+            this.group_backups.TabIndex = 2;
+            this.group_backups.TabStop = false;
+            this.group_backups.Text = "Backups";
+            // 
+            // txt_backupNumCopies
+            // 
+            this.txt_backupNumCopies.Enabled = false;
+            this.txt_backupNumCopies.Location = new System.Drawing.Point(40, 39);
+            this.txt_backupNumCopies.MaxLength = 3;
+            this.txt_backupNumCopies.Name = "txt_backupNumCopies";
+            this.txt_backupNumCopies.Size = new System.Drawing.Size(32, 21);
+            this.txt_backupNumCopies.TabIndex = 5;
+            this.txt_backupNumCopies.Text = "5";
+            this.txt_backupNumCopies.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txt_backupNumCopies.TextChanged += new System.EventHandler(this.txt_backupNumCopies_TextChanged);
+            // 
+            // lbl_numBackupCopies
+            // 
+            this.lbl_numBackupCopies.Location = new System.Drawing.Point(0, 40);
+            this.lbl_numBackupCopies.Name = "lbl_numBackupCopies";
+            this.lbl_numBackupCopies.Size = new System.Drawing.Size(168, 16);
+            this.lbl_numBackupCopies.TabIndex = 4;
+            this.lbl_numBackupCopies.Text = "Keep             previous copies.";
+            this.lbl_numBackupCopies.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chk_backupEnable
+            // 
+            this.chk_backupEnable.AutoSize = true;
+            this.chk_backupEnable.Location = new System.Drawing.Point(8, 16);
+            this.chk_backupEnable.Name = "chk_backupEnable";
+            this.chk_backupEnable.Size = new System.Drawing.Size(147, 17);
+            this.chk_backupEnable.TabIndex = 3;
+            this.chk_backupEnable.Text = "Enable managed backups";
+            this.chk_backupEnable.UseVisualStyleBackColor = true;
+            this.chk_backupEnable.CheckedChanged += new System.EventHandler(this.chk_backupEnable_CheckedChanged);
+            // 
+            // chk_autoCheck
+            // 
+            this.chk_autoCheck.AutoSize = true;
+            this.chk_autoCheck.Location = new System.Drawing.Point(16, 16);
+            this.chk_autoCheck.Name = "chk_autoCheck";
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
+            this.chk_autoCheck.TabIndex = 1;
+            this.chk_autoCheck.Text = "Auto Check on Startup";
+            this.chk_autoCheck.UseVisualStyleBackColor = true;
             // 
             // lbl_title
             // 
@@ -250,47 +345,15 @@
             this.lbl_title.Text = "Chrome\r\nNightly Updater+";
             this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tab_changelog
+            // chk_autoUnzip
             // 
-            this.tab_changelog.Controls.Add(this.txt_changelog);
-            this.tab_changelog.Location = new System.Drawing.Point(4, 22);
-            this.tab_changelog.Name = "tab_changelog";
-            this.tab_changelog.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_changelog.Size = new System.Drawing.Size(194, 284);
-            this.tab_changelog.TabIndex = 2;
-            this.tab_changelog.Text = "Changelog";
-            this.tab_changelog.UseVisualStyleBackColor = true;
-            // 
-            // txt_changelog
-            // 
-            this.txt_changelog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_changelog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_changelog.Location = new System.Drawing.Point(3, 3);
-            this.txt_changelog.Name = "txt_changelog";
-            this.txt_changelog.ReadOnly = true;
-            this.txt_changelog.Size = new System.Drawing.Size(188, 278);
-            this.txt_changelog.TabIndex = 1;
-            this.txt_changelog.Text = "Nothing here!\nCheck for updates first.";
-            // 
-            // group_options
-            // 
-            this.group_options.Controls.Add(this.chk_autoCheck);
-            this.group_options.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.group_options.Location = new System.Drawing.Point(3, 3);
-            this.group_options.Name = "group_options";
-            this.group_options.Size = new System.Drawing.Size(182, 206);
-            this.group_options.TabIndex = 1;
-            this.group_options.TabStop = false;
-            // 
-            // chk_autoCheck
-            // 
-            this.chk_autoCheck.AutoSize = true;
-            this.chk_autoCheck.Location = new System.Drawing.Point(8, 24);
-            this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
-            this.chk_autoCheck.TabIndex = 1;
-            this.chk_autoCheck.Text = "Auto Check on Startup";
-            this.chk_autoCheck.UseVisualStyleBackColor = true;
+            this.chk_autoUnzip.AutoSize = true;
+            this.chk_autoUnzip.Location = new System.Drawing.Point(16, 40);
+            this.chk_autoUnzip.Name = "chk_autoUnzip";
+            this.chk_autoUnzip.Size = new System.Drawing.Size(78, 17);
+            this.chk_autoUnzip.TabIndex = 3;
+            this.chk_autoUnzip.Text = "Auto-unzip";
+            this.chk_autoUnzip.UseVisualStyleBackColor = true;
             // 
             // main
             // 
@@ -309,12 +372,14 @@
             this.gui_tabs.ResumeLayout(false);
             this.tab_main.ResumeLayout(false);
             this.group_update.ResumeLayout(false);
+            this.tab_changelog.ResumeLayout(false);
             this.tab_settings.ResumeLayout(false);
             this.table_settings.ResumeLayout(false);
             this.table_settings.PerformLayout();
-            this.tab_changelog.ResumeLayout(false);
             this.group_options.ResumeLayout(false);
             this.group_options.PerformLayout();
+            this.group_backups.ResumeLayout(false);
+            this.group_backups.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,6 +407,11 @@
         private System.Windows.Forms.RichTextBox txt_changelog;
         private System.Windows.Forms.GroupBox group_options;
         private System.Windows.Forms.CheckBox chk_autoCheck;
+        private System.Windows.Forms.GroupBox group_backups;
+        private System.Windows.Forms.CheckBox chk_backupEnable;
+        private System.Windows.Forms.TextBox txt_backupNumCopies;
+        private System.Windows.Forms.Label lbl_numBackupCopies;
+        private System.Windows.Forms.CheckBox chk_autoUnzip;
 
     }
 }

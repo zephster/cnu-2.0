@@ -13,8 +13,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 /*
 * todo:
-* changelog
-* settings tab
+* changelog - done
+* settings tab - made, working on options
 * option to auto-check on startup
 * keep x number of past copies
 * auto-unzip

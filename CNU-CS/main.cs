@@ -36,7 +36,7 @@ using System.Threading;
  *      keep x number of past copies
  *      auto-unzip
  *      update checker/downloader/updater for cnu
- *      custom download file naming (the zip file)
+ *      custom download file naming (the zip file) - use .replace('find', 'replace');
  */
 
 
@@ -51,6 +51,8 @@ namespace CNU_CS
         public string latest_build = "00000";
         public string last_downloaded;
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
+        public bool backup_enabled;
+        public int backup_copies;
 
         public main()
         {
@@ -60,7 +62,7 @@ namespace CNU_CS
 
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
-            lbl_CNUversion.Text = version_info;
+            lbl_CNUversion.Text = "version " + version_info;
             lbl_latestBuild.Text = latest_build;
         }
 
@@ -285,6 +287,33 @@ namespace CNU_CS
             Thread changelog = new Thread(viewChangelog);
             changelog.Name = "View Changelog Thread";
             changelog.Start();
+        }
+
+        private void chk_backupEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_backupNumCopies.Enabled = (chk_backupEnable.Checked) ? true : false;
+            backup_enabled = (chk_backupEnable.Checked) ? true : false;
+            //Console.WriteLine(backup_enabled);
+        }
+
+        private void txt_backupNumCopies_TextChanged(object sender, EventArgs e)
+        {
+            if (backup_enabled)
+            {
+                try
+                {
+                    backup_copies = Convert.ToInt32(txt_backupNumCopies.Text);
+                    backup_copies = int.Parse(txt_backupNumCopies.Text);
+                    Console.WriteLine(backup_copies);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Oops! Numbers only, please.");
+                    txt_backupNumCopies.Text = "5";
+                }
+
+                
+            }
         }
 
     }
