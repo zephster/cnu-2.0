@@ -288,6 +288,7 @@
             this.chk_autoUnzip.TabIndex = 3;
             this.chk_autoUnzip.Text = "Auto-unzip";
             this.chk_autoUnzip.UseVisualStyleBackColor = true;
+            this.chk_autoUnzip.CheckedChanged += new System.EventHandler(this.chk_autoUnzip_CheckedChanged);
             // 
             // group_backups
             // 
@@ -327,7 +328,7 @@
             this.chk_backupEnable.AutoSize = true;
             this.chk_backupEnable.Location = new System.Drawing.Point(8, 16);
             this.chk_backupEnable.Name = "chk_backupEnable";
-            this.chk_backupEnable.Size = new System.Drawing.Size(147, 17);
+            this.chk_backupEnable.Size = new System.Drawing.Size(150, 17);
             this.chk_backupEnable.TabIndex = 3;
             this.chk_backupEnable.Text = "Enable managed backups";
             this.chk_backupEnable.UseVisualStyleBackColor = true;

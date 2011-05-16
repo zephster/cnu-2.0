@@ -46,5 +46,41 @@ namespace CNU_CS.Properties {
                 this["auto_check"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool auto_unzip {
+            get {
+                return ((bool)(this["auto_unzip"]));
+            }
+            set {
+                this["auto_unzip"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool backup_enabled {
+            get {
+                return ((bool)(this["backup_enabled"]));
+            }
+            set {
+                this["backup_enabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string backup_count {
+            get {
+                return ((string)(this["backup_count"]));
+            }
+            set {
+                this["backup_count"] = value;
+            }
+        }
     }
 }

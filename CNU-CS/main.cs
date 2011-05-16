@@ -31,8 +31,8 @@ using System.Threading;
 /*
  * todo:
  *      changelog - DONE!
- *      settings tab
- *      option to auto-check on startup
+ *      settings tab - in progress
+ *      auto-check on startup - DONE
  *      keep x number of past copies
  *      auto-unzip
  *      update checker/downloader/updater for cnu
@@ -46,7 +46,8 @@ using System.Threading;
  *      check for cnup update in advanced?
  *      
  * known bugs - seriously wtf is up with this shit i can't figure these out:
- *      clicking view changelog multiple times re-runs the callback function +1.
+ *      clicking view changelog multiple times re-runs the callback function +1
+ *      some useless loops to solve
  */
 
 
@@ -62,15 +63,41 @@ namespace CNU_CS
         //public int last_downloaded;
         public string latest_build = "84202"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
-        public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
+        
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
         public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+
         public bool backup_enabled;
         public int backup_copies;
+        public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
+        public bool auto_unzip = Properties.Settings.Default.auto_unzip;
 
         public main()
         {
             InitializeComponent();
+        }
+
+        private void main_Load(object sender, EventArgs e)
+        {
+            lbl_lastDownloaded.Text = last_downloaded;
+            chk_autoCheck.Checked = auto_checkUpdate;
+            chk_autoUnzip.Checked = auto_unzip;
+
+            object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            string version_info = v.ToString();
+            lbl_CNUversion.Text = "version " + version_info;
+            lbl_latestBuild.Text = latest_build;
+
+            if (auto_checkUpdate)
+            {
+                Console.WriteLine("auto-checking for chrome updates");
+                btn_checkUpdate.PerformClick();
+            }
+
+            if (auto_unzip)
+            {
+                Console.WriteLine("auto-unzip enabled");
+            }
         }
 
         //thread delegates
@@ -91,7 +118,7 @@ namespace CNU_CS
             }
             else
             {
-                //this whole try/catch is a hackfix
+                //i think i solved the actual problem, leavin this in for now
                 //try
                 //{
                 //    int message_int = Convert.ToInt32(message);
@@ -148,9 +175,11 @@ namespace CNU_CS
                 this.lbl_downloadProgress.Text = "";
                 this.btn_cancelDownload.Visible = false;
                 this.progress_download.Value = 0;
+                this.lbl_lastDownloaded.Text = this.latest_build;
                 saveLastDownloaded(this.latest_build);
             }
         }
+
         private void thread_changelogComplete(string changelog)
         {
             if (this.txt_changelog.InvokeRequired)
@@ -175,6 +204,7 @@ namespace CNU_CS
             thread_doneUpdating(e.Result);
             Console.WriteLine("checkUpdateCallback - should only be seen when checking for chrome updates");
         }
+
         private void changelogCallback(object sender, DownloadStringCompletedEventArgs e)
         {
             Console.WriteLine("changelogCallback - before parsing the changelog xml");
@@ -204,20 +234,14 @@ namespace CNU_CS
                     Console.WriteLine("changelog xml parsed, results:\n" + changelog_complete);
                     thread_changelogComplete(changelog_complete);
                 }
-            } catch (Exception err){
-                throw new Exception("Uh oh! " + err.Message);
+            } catch (Exception){
+                //throw new Exception("Uh oh! " + err.Message);
+                string changelog_complete = "No changelong for this build found.";
+                thread_changelogComplete(changelog_complete);
             }
         }
-        private void saveLastDownloaded(string version)
-        {
-            Properties.Settings.Default.last_downloaded = version;
-            Properties.Settings.Default.Save();
-        }
-        private void saveAutoCheck(bool autocheck)
-        {
-            Properties.Settings.Default.auto_check = autocheck;
-            Properties.Settings.Default.Save();
-        }
+
+
 
 
         //functions
@@ -233,7 +257,6 @@ namespace CNU_CS
                 throw new Exception("Error checking for latest vesion, oh no!\n" + err.Message, err);
             }
         }
-
 
         private void viewChangelog()
         {
@@ -326,7 +349,9 @@ namespace CNU_CS
         {
             txt_backupNumCopies.Enabled = (chk_backupEnable.Checked) ? true : false;
             backup_enabled = (chk_backupEnable.Checked) ? true : false;
-            //Console.WriteLine(backup_enabled);
+
+            Properties.Settings.Default.auto_unzip = chk_autoUnzip.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void txt_backupNumCopies_TextChanged(object sender, EventArgs e)
@@ -345,32 +370,32 @@ namespace CNU_CS
                     //i don't like this method. i want to just delete the invalid character
                     MessageBox.Show("Oops! Numbers only, please.");
                     txt_backupNumCopies.Text = "5";
-                }
-
-                
+                }                
             }
+        }
+
+
+
+
+        /*
+         * SETTINGS
+         */
+        private void saveLastDownloaded(string version)
+        {
+            Properties.Settings.Default.last_downloaded = version;
+            Properties.Settings.Default.Save();
         }
 
         private void chk_autoCheck_CheckedChanged(object sender, EventArgs e)
         {
-            saveAutoCheck(chk_autoCheck.Checked);
+            Properties.Settings.Default.auto_check = chk_autoCheck.Checked;
+            Properties.Settings.Default.Save();
         }
 
-        private void main_Load(object sender, EventArgs e)
+        private void chk_autoUnzip_CheckedChanged(object sender, EventArgs e)
         {
-            lbl_lastDownloaded.Text = last_downloaded;
-            chk_autoCheck.Checked = auto_checkUpdate;
-
-            object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            string version_info = v.ToString();
-            lbl_CNUversion.Text = "version " + version_info;
-            lbl_latestBuild.Text = latest_build;
-
-            if (auto_checkUpdate)
-            {
-                Console.WriteLine("auto-checking for chrome updates");
-                btn_checkUpdate.PerformClick();
-            }
+            Properties.Settings.Default.auto_unzip = chk_autoUnzip.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }
