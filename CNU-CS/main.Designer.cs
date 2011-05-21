@@ -185,6 +185,7 @@
             this.group_update.Size = new System.Drawing.Size(160, 176);
             this.group_update.TabIndex = 4;
             this.group_update.TabStop = false;
+            this.group_update.Visible = false;
             // 
             // btn_cancelDownload
             // 

@@ -39,8 +39,6 @@ using System.Threading;
  *      calculate download progress speed in kb/s
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
  *      
- * CHANGE LATEST_BUILD BACK TO 00000
- *      
  * notes to future self
  *      settings tab may have to make window wider and put another tab group for advanced options
  *      adv. options: URIs for chrome LATEST, changelog, and binary
@@ -61,9 +59,7 @@ namespace CNU_CS
         private static WebClient client_download = new WebClient();
         private static WebClient client_downloadProgressUpdate = new WebClient();
 
-        //public int latets_build;
-        //public int last_downloaded;
-        public string latest_build = "84202"; //can use 84202 to test
+        public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
         
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
@@ -114,30 +110,15 @@ namespace CNU_CS
             {
                 threadDelegate_update d = new threadDelegate_update(thread_doneUpdating);
                 this.Invoke(d, message);
-                //this.lbl_latestBuild.Invoke(d, message);
-                //this.btn_checkUpdate.Invoke(d, message);
-                //this.group_update.Invoke(d, message);
             }
             else
             {
-                //i think i solved the actual problem, leavin this in for now
-                //try
-                //{
-                //    int message_int = Convert.ToInt32(message);
-                //    message_int = int.Parse(message);
-                //    Console.WriteLine("thread_doneUpdating - " + message);
-                //}
-                //catch (Exception err)
-                //{
-                //    Console.WriteLine("-----\nthread_doneUpdating HACKFIX - this should not be run when viewing changelog, and is causing the latest build label over-write\n" + err.Message + "\n-----");
-                //    return;
-                //}
-
                 this.lbl_latestBuild.Text = message;
                 this.btn_checkUpdate.Text = "Check for Update";
                 this.btn_checkUpdate.Enabled = true;
                 this.group_update.Visible = true;
                 this.latest_build = message;
+                Console.WriteLine("done updating");
             }
         }
 
@@ -153,9 +134,10 @@ namespace CNU_CS
             {
                 long bytes = e.BytesReceived / 1024;
                 long totalBytes = e.TotalBytesToReceive / 1024;
+                int percent = e.ProgressPercentage;
 
-                this.progress_download.Value = e.ProgressPercentage;
-                this.lbl_downloadProgress.Text = bytes + "kb / " + totalBytes + "kb";
+                this.progress_download.Value = percent;
+                this.lbl_downloadProgress.Text = bytes + "kb / " + totalBytes + "kb - " + percent + "%";
             }
         }
 
@@ -165,11 +147,6 @@ namespace CNU_CS
             {
                 threadDelegate_download d = new threadDelegate_download(thread_downloadComplete);
                 this.Invoke(d, sender, e);
-                //this.btn_downloadUpdate.Invoke(d, sender, e);
-                //this.lbl_downloadProgress.Invoke(d, sender, e);
-                //this.progress_download.Invoke(d, sender, e);
-                //this.btn_cancelDownload.Invoke(d, sender, e);
-
             }
             else
             {
