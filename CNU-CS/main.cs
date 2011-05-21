@@ -181,16 +181,7 @@ namespace CNU_CS
                     if (backup_enabled)
                     {
                         string[] files = Directory.GetFiles(appPath, "*.zip");
-                        string filename;
                         int deleteUpTo = files.Length - backup_copies;
-
-                        Console.WriteLine(files);
-
-                        for (int i = 0; i < files.Length; i++)
-                        {
-                            filename = files[i].Replace(appPath + "\\", null);
-                            Console.WriteLine(i + ": " + filename);
-                        }
 
                         for (int x = 0; x < deleteUpTo; x++)
                         {
