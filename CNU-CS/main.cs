@@ -31,12 +31,11 @@ using System.Threading;
 /*
  * todo:
  *      changelog - DONE!
- *      settings tab - in progress
  *      auto-check on startup - DONE
- *      keep x number of past copies
+ *      keep x number of past copies - DONE
  *      auto-unzip
  *      update checker/downloader/updater for cnu
- *      calculate download progress speed in kb/s
+ *      calculate download progress speed in kb/s - DONE
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
  *      
  * notes to future self
@@ -59,7 +58,7 @@ namespace CNU_CS
         private static WebClient client_download = new WebClient();
         private static WebClient client_downloadProgressUpdate = new WebClient();
 
-        public string latest_build = "83704"; //can use 84202 to test
+        public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
         
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
