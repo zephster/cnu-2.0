@@ -59,14 +59,15 @@ namespace CNU_CS
         private static WebClient client_download = new WebClient();
         private static WebClient client_downloadProgressUpdate = new WebClient();
 
-        public string latest_build = "00000"; //can use 84202 to test
+        public string latest_build = "83704"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
         
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
         public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
 
-        public bool backup_enabled;
-        public int backup_copies;
+        public bool backup_enabled = Properties.Settings.Default.backup_enabled;
+        public int backup_copies = Properties.Settings.Default.backup_copies;
+
         public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
         public bool auto_unzip = Properties.Settings.Default.auto_unzip;
 
@@ -85,10 +86,15 @@ namespace CNU_CS
             lbl_lastDownloaded.Text = last_downloaded;
             chk_autoCheck.Checked = auto_checkUpdate;
             chk_autoUnzip.Checked = auto_unzip;
+            chk_backupEnable.Checked = backup_enabled;
+            txt_backupNumCopies.Text = backup_copies.ToString();
 
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
             lbl_CNUversion.Text = "version " + version_info;
+
+            if (latest_build != "00000")
+                Console.WriteLine("Change latest_build back to 00000 for release!\nAnd hide the download group!");
             
             if (auto_checkUpdate)
             {
@@ -145,7 +151,7 @@ namespace CNU_CS
 
                 int percent = e.ProgressPercentage;
                 this.progress_download.Value = percent;
-                this.lbl_downloadProgress.Text = mb_down + "mb / " + mb_total + "mb\n" + percent + "% (" + download_kbps + " kb/s)";
+                this.lbl_downloadProgress.Text = mb_down + " mb / " + mb_total + " mb\n" + percent + "% (" + download_kbps + " kb/s)";
                 this.timer_downloadSpeed.Enabled = true;
             }
         }
@@ -175,12 +181,26 @@ namespace CNU_CS
 
                     if (backup_enabled)
                     {
+                        string[] files = Directory.GetFiles(appPath, "*.zip");
+                        string filename;
+                        int deleteUpTo = files.Length - backup_copies;
 
+                        Console.WriteLine(files);
+
+                        for (int i = 0; i < files.Length; i++)
+                        {
+                            filename = files[i].Replace(appPath + "\\", null);
+                            Console.WriteLine(i + ": " + filename);
+                        }
+
+                        for (int x = 0; x < deleteUpTo; x++)
+                        {
+                            System.IO.File.Delete(files[x]);
+                            Console.WriteLine("deleting file: " + files[x]);
+                        }
                     }
                 }
             }
-
-            return;
         }
 
         private void thread_changelogComplete(string changelog)
@@ -350,7 +370,7 @@ namespace CNU_CS
             txt_backupNumCopies.Enabled = (chk_backupEnable.Checked) ? true : false;
             backup_enabled = (chk_backupEnable.Checked) ? true : false;
 
-            Properties.Settings.Default.auto_unzip = chk_autoUnzip.Checked;
+            Properties.Settings.Default.backup_enabled = chk_backupEnable.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -364,6 +384,9 @@ namespace CNU_CS
                     backup_copies = Convert.ToInt32(txt_backupNumCopies.Text);
                     backup_copies = int.Parse(txt_backupNumCopies.Text);
                     Console.WriteLine(backup_copies);
+
+                    Properties.Settings.Default.backup_copies = backup_copies;
+                    Properties.Settings.Default.Save();
                 }
                 catch (Exception)
                 {
@@ -404,5 +427,6 @@ namespace CNU_CS
             download_bytesReceived_old = download_bytesReceived_new;
             Console.WriteLine("kbps: " + download_kbps);
         }
+
     }
 }

@@ -187,7 +187,6 @@
             this.group_update.Size = new System.Drawing.Size(160, 176);
             this.group_update.TabIndex = 4;
             this.group_update.TabStop = false;
-            this.group_update.Visible = false;
             // 
             // btn_cancelDownload
             // 
@@ -341,7 +340,7 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(16, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
