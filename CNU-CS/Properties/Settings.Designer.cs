@@ -73,10 +73,10 @@ namespace CNU_CS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string backup_count {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int backup_count {
             get {
-                return ((string)(this["backup_count"]));
+                return ((int)(this["backup_count"]));
             }
             set {
                 this["backup_count"] = value;

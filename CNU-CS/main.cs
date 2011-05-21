@@ -39,6 +39,8 @@ using System.Threading;
  *      calculate download progress speed in kb/s
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
  *      
+ * CHANGE LATEST_BUILD BACK TO 00000
+ *      
  * notes to future self
  *      settings tab may have to make window wider and put another tab group for advanced options
  *      adv. options: URIs for chrome LATEST, changelog, and binary
@@ -86,7 +88,6 @@ namespace CNU_CS
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
             lbl_CNUversion.Text = "version " + version_info;
-            lbl_latestBuild.Text = latest_build;
 
             if (auto_checkUpdate)
             {
@@ -112,7 +113,8 @@ namespace CNU_CS
             if (this.lbl_latestBuild.InvokeRequired)
             {
                 threadDelegate_update d = new threadDelegate_update(thread_doneUpdating);
-                this.lbl_latestBuild.Invoke(d, message);
+                this.Invoke(d, message);
+                //this.lbl_latestBuild.Invoke(d, message);
                 //this.btn_checkUpdate.Invoke(d, message);
                 //this.group_update.Invoke(d, message);
             }
@@ -162,10 +164,11 @@ namespace CNU_CS
             if (this.btn_downloadUpdate.InvokeRequired)
             {
                 threadDelegate_download d = new threadDelegate_download(thread_downloadComplete);
-                this.btn_downloadUpdate.Invoke(d, sender, e);
-                this.lbl_downloadProgress.Invoke(d, sender, e);
-                this.progress_download.Invoke(d, sender, e);
-                this.btn_cancelDownload.Invoke(d, sender, e);
+                this.Invoke(d, sender, e);
+                //this.btn_downloadUpdate.Invoke(d, sender, e);
+                //this.lbl_downloadProgress.Invoke(d, sender, e);
+                //this.progress_download.Invoke(d, sender, e);
+                //this.btn_cancelDownload.Invoke(d, sender, e);
 
             }
             else
@@ -175,9 +178,22 @@ namespace CNU_CS
                 this.lbl_downloadProgress.Text = "";
                 this.btn_cancelDownload.Visible = false;
                 this.progress_download.Value = 0;
-                this.lbl_lastDownloaded.Text = this.latest_build;
-                saveLastDownloaded(this.latest_build);
+
+                if (e.Cancelled)
+                    System.IO.File.Delete(appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                else
+                {
+                    this.lbl_lastDownloaded.Text = this.latest_build;
+                    saveLastDownloaded(this.latest_build);
+
+                    if (backup_enabled)
+                    {
+
+                    }
+                }
             }
+
+            return;
         }
 
         private void thread_changelogComplete(string changelog)
@@ -327,9 +343,6 @@ namespace CNU_CS
             client_downloadProgressUpdate.CancelAsync();
             progress_download.Value = 0;
             btn_cancelDownload.Visible = false;
-
-            //delete incomplete file
-            //File.Delete(appPath + @"\chrome-win32-" + this.latest_build + ".zip");
         }
 
         private void btn_viewChangelog_Click(object sender, EventArgs e)
