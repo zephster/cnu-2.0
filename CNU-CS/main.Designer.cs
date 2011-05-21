@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbl_lastDownloadedText = new System.Windows.Forms.Label();
             this.lbl_latestBuildText = new System.Windows.Forms.Label();
             this.lbl_lastDownloaded = new System.Windows.Forms.Label();
@@ -54,6 +55,7 @@
             this.chk_backupEnable = new System.Windows.Forms.CheckBox();
             this.chk_autoCheck = new System.Windows.Forms.CheckBox();
             this.lbl_title = new System.Windows.Forms.Label();
+            this.timer_downloadSpeed = new System.Windows.Forms.Timer(this.components);
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
@@ -185,7 +187,6 @@
             this.group_update.Size = new System.Drawing.Size(160, 176);
             this.group_update.TabIndex = 4;
             this.group_update.TabStop = false;
-            this.group_update.Visible = false;
             // 
             // btn_cancelDownload
             // 
@@ -200,9 +201,9 @@
             // 
             // lbl_downloadProgress
             // 
-            this.lbl_downloadProgress.Location = new System.Drawing.Point(16, 152);
+            this.lbl_downloadProgress.Location = new System.Drawing.Point(8, 146);
             this.lbl_downloadProgress.Name = "lbl_downloadProgress";
-            this.lbl_downloadProgress.Size = new System.Drawing.Size(128, 13);
+            this.lbl_downloadProgress.Size = new System.Drawing.Size(144, 27);
             this.lbl_downloadProgress.TabIndex = 4;
             this.lbl_downloadProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -356,6 +357,11 @@
             this.lbl_title.Text = "Chrome\r\nNightly Updater+";
             this.lbl_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // timer_downloadSpeed
+            // 
+            this.timer_downloadSpeed.Interval = 1000;
+            this.timer_downloadSpeed.Tick += new System.EventHandler(this.timer_downloadSpeed_Tick);
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -414,6 +420,7 @@
         private System.Windows.Forms.TextBox txt_backupNumCopies;
         private System.Windows.Forms.Label lbl_numBackupCopies;
         private System.Windows.Forms.CheckBox chk_autoUnzip;
+        private System.Windows.Forms.Timer timer_downloadSpeed;
 
     }
 }

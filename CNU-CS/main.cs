@@ -1,5 +1,5 @@
 ﻿/*
- * Chrome Nightly Updater+ 2.0, ©2010 Brandon Sachs <antizeph@gmail.com>
+ * Chrome Nightly Updater+ 2.0, ©2010 Brandon <antizeph@gmail.com>
  * 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace CNU_CS
         private static WebClient client_download = new WebClient();
         private static WebClient client_downloadProgressUpdate = new WebClient();
 
-        public string latest_build = "00000"; //can use 84202 to test
+        public string latest_build = "84202"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
         
         public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
@@ -69,6 +69,11 @@ namespace CNU_CS
         public int backup_copies;
         public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
         public bool auto_unzip = Properties.Settings.Default.auto_unzip;
+
+        public long download_bytesReceived_old = 0;
+        public long download_bytesReceived_new = 0;
+        public long download_bytesTotal = 0;
+        public long download_kbps = 0;
 
         public main()
         {
@@ -84,7 +89,7 @@ namespace CNU_CS
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
             lbl_CNUversion.Text = "version " + version_info;
-
+            
             if (auto_checkUpdate)
             {
                 Console.WriteLine("auto-checking for chrome updates");
@@ -124,20 +129,24 @@ namespace CNU_CS
 
         private void thread_downloadProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
+            
             if (this.progress_download.InvokeRequired)
             {
                 threadDelegate_downloadProgress d = new threadDelegate_downloadProgress(thread_downloadProgressUpdate);
-                this.progress_download.Invoke(d, sender, e);
-                this.lbl_downloadProgress.Invoke(d, sender, e);
+                this.Invoke(d, sender, e);
             }
             else
             {
-                long bytes = e.BytesReceived / 1024;
-                long totalBytes = e.TotalBytesToReceive / 1024;
-                int percent = e.ProgressPercentage;
+                download_bytesReceived_new = e.BytesReceived / 1024;
+                download_bytesTotal = e.TotalBytesToReceive / 1024;
 
+                double mb_down = Math.Round(download_bytesReceived_new * 0.0009765625, 2);
+                double mb_total = Math.Round(download_bytesTotal * 0.0009765625, 2);
+
+                int percent = e.ProgressPercentage;
                 this.progress_download.Value = percent;
-                this.lbl_downloadProgress.Text = bytes + "kb / " + totalBytes + "kb - " + percent + "%";
+                this.lbl_downloadProgress.Text = mb_down + "mb / " + mb_total + "mb\n" + percent + "% (" + download_kbps + " kb/s)";
+                this.timer_downloadSpeed.Enabled = true;
             }
         }
 
@@ -155,6 +164,7 @@ namespace CNU_CS
                 this.lbl_downloadProgress.Text = "";
                 this.btn_cancelDownload.Visible = false;
                 this.progress_download.Value = 0;
+                this.timer_downloadSpeed.Enabled = false;
 
                 if (e.Cancelled)
                     System.IO.File.Delete(appPath + @"\chrome-win32-" + this.latest_build + ".zip");
@@ -386,6 +396,13 @@ namespace CNU_CS
         {
             Properties.Settings.Default.auto_unzip = chk_autoUnzip.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void timer_downloadSpeed_Tick(object sender, EventArgs e)
+        {
+            download_kbps = download_bytesReceived_new - download_bytesReceived_old;
+            download_bytesReceived_old = download_bytesReceived_new;
+            Console.WriteLine("kbps: " + download_kbps);
         }
     }
 }
