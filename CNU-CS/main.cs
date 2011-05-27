@@ -37,6 +37,7 @@ using System.Threading;
  *      update checker/downloader/updater for cnu
  *      calculate download progress speed in kb/s - DONE
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
+ *      timestamps on files
  *      
  * notes to future self
  *      settings tab may have to make window wider and put another tab group for advanced options
@@ -66,6 +67,7 @@ namespace CNU_CS
 
         public bool backup_enabled = Properties.Settings.Default.backup_enabled;
         public int backup_copies = Properties.Settings.Default.backup_copies;
+        public int backup_copies_default = 5;
 
         public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
         public bool auto_unzip = Properties.Settings.Default.auto_unzip;
@@ -93,7 +95,7 @@ namespace CNU_CS
             lbl_CNUversion.Text = "version " + version_info;
 
             if (latest_build != "00000")
-                Console.WriteLine("Change latest_build back to 00000 for release!\nAnd hide the download group!");
+                Console.WriteLine("Change latest_build back to 00000 for build\nAnd hide the download group");
             
             if (auto_checkUpdate)
             {
@@ -112,6 +114,7 @@ namespace CNU_CS
         private delegate void threadDelegate_downloadProgress(object sender, DownloadProgressChangedEventArgs e);
         private delegate void threadDelegate_download(object sender, AsyncCompletedEventArgs e);
         private delegate void threadDelegate_changelog(string changelog);
+        private delegate void threadDelegate_updateCNU(string message);
 
         //threaded functions
         private void thread_doneUpdating(string message)
@@ -355,6 +358,12 @@ namespace CNU_CS
             changelog_thread.Start();
         }
 
+
+        private void btn_checkCNUUpdate_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("nyi");
+        }
+
         private void chk_backupEnable_CheckedChanged(object sender, EventArgs e)
         {
             txt_backupNumCopies.Enabled = (chk_backupEnable.Checked) ? true : false;
@@ -373,18 +382,32 @@ namespace CNU_CS
                 {
                     backup_copies = Convert.ToInt32(txt_backupNumCopies.Text);
                     backup_copies = int.Parse(txt_backupNumCopies.Text);
-                    Console.WriteLine(backup_copies);
+                    
+                    //Console.WriteLine(backup_copies);
 
                     Properties.Settings.Default.backup_copies = backup_copies;
                     Properties.Settings.Default.Save();
                 }
                 catch (Exception)
                 {
-                    //i don't like this method. i want to just delete the invalid character
-                    MessageBox.Show("Oops! Numbers only, please.");
-                    txt_backupNumCopies.Text = "5";
+                    int length = txt_backupNumCopies.TextLength;
+                    if (length == 0)
+                        return;
+                    else
+                        txt_backupNumCopies.Text = txt_backupNumCopies.Text.Substring(0, txt_backupNumCopies.TextLength - 1);
                 }                
             }
+        }
+        private void txt_backupNumCopies_Click(object sender, EventArgs e)
+        {
+            txt_backupNumCopies.SelectionStart = 0;
+            txt_backupNumCopies.SelectionLength = txt_backupNumCopies.TextLength;
+        }
+        private void txt_backupNumCopies_LostFocus(object sender, EventArgs e)
+        {
+            int length = txt_backupNumCopies.TextLength;
+            if (length == 0)
+                txt_backupNumCopies.Text = backup_copies_default.ToString();
         }
 
 
@@ -417,6 +440,5 @@ namespace CNU_CS
             download_bytesReceived_old = download_bytesReceived_new;
             Console.WriteLine("kbps: " + download_kbps);
         }
-
     }
 }

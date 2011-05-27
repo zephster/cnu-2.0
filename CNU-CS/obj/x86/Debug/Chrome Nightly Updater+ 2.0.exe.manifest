@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="Chrome Nightly Updater+ 2.0.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Chrome Nightly Updater+ 2.0" version="1.0.4158.20656" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Chrome Nightly Updater+ 2.0" version="1.0.4163.34301" language="neutral" processorArchitecture="x86" />
     <commandLine file="Chrome Nightly Updater+ 2.0.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrome Nightly Updater+ 2.0.exe" size="26112">
-      <assemblyIdentity name="Chrome Nightly Updater+ 2.0" version="1.0.4158.20656" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrome Nightly Updater+ 2.0.exe" size="27648">
+      <assemblyIdentity name="Chrome Nightly Updater+ 2.0" version="1.0.4163.34301" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CnKAQA0t0jZ6pNez95cdLokz16s=</dsig:DigestValue>
+        <dsig:DigestValue>SpzThgKe1OZstgsa5UIaj3TiA6g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

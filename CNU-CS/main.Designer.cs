@@ -46,7 +46,8 @@
             this.txt_changelog = new System.Windows.Forms.RichTextBox();
             this.tab_settings = new System.Windows.Forms.TabPage();
             this.table_settings = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_CNUversion = new System.Windows.Forms.Label();
+            this.gui_settingsTab = new System.Windows.Forms.TabControl();
+            this.tab_options = new System.Windows.Forms.TabPage();
             this.group_options = new System.Windows.Forms.GroupBox();
             this.chk_autoUnzip = new System.Windows.Forms.CheckBox();
             this.group_backups = new System.Windows.Forms.GroupBox();
@@ -54,6 +55,9 @@
             this.lbl_numBackupCopies = new System.Windows.Forms.Label();
             this.chk_backupEnable = new System.Windows.Forms.CheckBox();
             this.chk_autoCheck = new System.Windows.Forms.CheckBox();
+            this.tab_about = new System.Windows.Forms.TabPage();
+            this.btn_checkCNUUpdate = new System.Windows.Forms.Button();
+            this.lbl_CNUversion = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.timer_downloadSpeed = new System.Windows.Forms.Timer(this.components);
             this.gui_tabs.SuspendLayout();
@@ -62,8 +66,11 @@
             this.tab_changelog.SuspendLayout();
             this.tab_settings.SuspendLayout();
             this.table_settings.SuspendLayout();
+            this.gui_settingsTab.SuspendLayout();
+            this.tab_options.SuspendLayout();
             this.group_options.SuspendLayout();
             this.group_backups.SuspendLayout();
+            this.tab_about.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -247,8 +254,8 @@
             this.table_settings.ColumnCount = 1;
             this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.table_settings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.table_settings.Controls.Add(this.gui_settingsTab, 0, 0);
             this.table_settings.Controls.Add(this.lbl_CNUversion, 0, 1);
-            this.table_settings.Controls.Add(this.group_options, 0, 0);
             this.table_settings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.table_settings.Location = new System.Drawing.Point(3, 49);
             this.table_settings.Name = "table_settings";
@@ -258,33 +265,44 @@
             this.table_settings.Size = new System.Drawing.Size(188, 232);
             this.table_settings.TabIndex = 1;
             // 
-            // lbl_CNUversion
+            // gui_settingsTab
             // 
-            this.lbl_CNUversion.AutoSize = true;
-            this.lbl_CNUversion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbl_CNUversion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_CNUversion.Location = new System.Drawing.Point(3, 212);
-            this.lbl_CNUversion.Name = "lbl_CNUversion";
-            this.lbl_CNUversion.Size = new System.Drawing.Size(182, 20);
-            this.lbl_CNUversion.TabIndex = 0;
-            this.lbl_CNUversion.Text = "Version Kush 4.2.0";
-            this.lbl_CNUversion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gui_settingsTab.Controls.Add(this.tab_options);
+            this.gui_settingsTab.Controls.Add(this.tab_about);
+            this.gui_settingsTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gui_settingsTab.Location = new System.Drawing.Point(3, 3);
+            this.gui_settingsTab.Name = "gui_settingsTab";
+            this.gui_settingsTab.SelectedIndex = 0;
+            this.gui_settingsTab.Size = new System.Drawing.Size(182, 206);
+            this.gui_settingsTab.TabIndex = 5;
+            // 
+            // tab_options
+            // 
+            this.tab_options.Controls.Add(this.group_options);
+            this.tab_options.Location = new System.Drawing.Point(4, 22);
+            this.tab_options.Name = "tab_options";
+            this.tab_options.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_options.Size = new System.Drawing.Size(174, 180);
+            this.tab_options.TabIndex = 0;
+            this.tab_options.Text = "Options";
+            this.tab_options.UseVisualStyleBackColor = true;
             // 
             // group_options
             // 
+            this.group_options.BackColor = System.Drawing.Color.Transparent;
             this.group_options.Controls.Add(this.chk_autoUnzip);
             this.group_options.Controls.Add(this.group_backups);
             this.group_options.Controls.Add(this.chk_autoCheck);
             this.group_options.Dock = System.Windows.Forms.DockStyle.Fill;
             this.group_options.Location = new System.Drawing.Point(3, 3);
             this.group_options.Name = "group_options";
-            this.group_options.Size = new System.Drawing.Size(182, 206);
-            this.group_options.TabIndex = 1;
+            this.group_options.Size = new System.Drawing.Size(168, 174);
+            this.group_options.TabIndex = 2;
             this.group_options.TabStop = false;
             // 
             // chk_autoUnzip
             // 
-            this.chk_autoUnzip.Location = new System.Drawing.Point(16, 40);
+            this.chk_autoUnzip.Location = new System.Drawing.Point(14, 40);
             this.chk_autoUnzip.Name = "chk_autoUnzip";
             this.chk_autoUnzip.Size = new System.Drawing.Size(78, 17);
             this.chk_autoUnzip.TabIndex = 3;
@@ -297,9 +315,9 @@
             this.group_backups.Controls.Add(this.txt_backupNumCopies);
             this.group_backups.Controls.Add(this.lbl_numBackupCopies);
             this.group_backups.Controls.Add(this.chk_backupEnable);
-            this.group_backups.Location = new System.Drawing.Point(8, 128);
+            this.group_backups.Location = new System.Drawing.Point(6, 100);
             this.group_backups.Name = "group_backups";
-            this.group_backups.Size = new System.Drawing.Size(168, 68);
+            this.group_backups.Size = new System.Drawing.Size(156, 68);
             this.group_backups.TabIndex = 2;
             this.group_backups.TabStop = false;
             this.group_backups.Text = "Backups";
@@ -315,6 +333,8 @@
             this.txt_backupNumCopies.Text = "5";
             this.txt_backupNumCopies.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txt_backupNumCopies.TextChanged += new System.EventHandler(this.txt_backupNumCopies_TextChanged);
+            this.txt_backupNumCopies.Click += new System.EventHandler(this.txt_backupNumCopies_Click);
+            this.txt_backupNumCopies.LostFocus += new System.EventHandler(this.txt_backupNumCopies_LostFocus);
             // 
             // lbl_numBackupCopies
             // 
@@ -339,13 +359,46 @@
             // chk_autoCheck
             // 
             this.chk_autoCheck.AutoSize = true;
-            this.chk_autoCheck.Location = new System.Drawing.Point(16, 16);
+            this.chk_autoCheck.Location = new System.Drawing.Point(14, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
             this.chk_autoCheck.CheckedChanged += new System.EventHandler(this.chk_autoCheck_CheckedChanged);
+            // 
+            // tab_about
+            // 
+            this.tab_about.Controls.Add(this.btn_checkCNUUpdate);
+            this.tab_about.Location = new System.Drawing.Point(4, 22);
+            this.tab_about.Name = "tab_about";
+            this.tab_about.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_about.Size = new System.Drawing.Size(174, 180);
+            this.tab_about.TabIndex = 1;
+            this.tab_about.Text = "About";
+            this.tab_about.UseVisualStyleBackColor = true;
+            // 
+            // btn_checkCNUUpdate
+            // 
+            this.btn_checkCNUUpdate.Location = new System.Drawing.Point(18, 25);
+            this.btn_checkCNUUpdate.Name = "btn_checkCNUUpdate";
+            this.btn_checkCNUUpdate.Size = new System.Drawing.Size(137, 39);
+            this.btn_checkCNUUpdate.TabIndex = 0;
+            this.btn_checkCNUUpdate.Text = "Check for CNU Updates";
+            this.btn_checkCNUUpdate.UseVisualStyleBackColor = true;
+            this.btn_checkCNUUpdate.Click += new System.EventHandler(this.btn_checkCNUUpdate_Click);
+            // 
+            // lbl_CNUversion
+            // 
+            this.lbl_CNUversion.AutoSize = true;
+            this.lbl_CNUversion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbl_CNUversion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_CNUversion.Location = new System.Drawing.Point(3, 212);
+            this.lbl_CNUversion.Name = "lbl_CNUversion";
+            this.lbl_CNUversion.Size = new System.Drawing.Size(182, 20);
+            this.lbl_CNUversion.TabIndex = 0;
+            this.lbl_CNUversion.Text = "Version Kush 4.2.0";
+            this.lbl_CNUversion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_title
             // 
@@ -385,10 +438,13 @@
             this.tab_settings.ResumeLayout(false);
             this.table_settings.ResumeLayout(false);
             this.table_settings.PerformLayout();
+            this.gui_settingsTab.ResumeLayout(false);
+            this.tab_options.ResumeLayout(false);
             this.group_options.ResumeLayout(false);
             this.group_options.PerformLayout();
             this.group_backups.ResumeLayout(false);
             this.group_backups.PerformLayout();
+            this.tab_about.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -414,14 +470,18 @@
         private System.Windows.Forms.Label lbl_CNUversion;
         private System.Windows.Forms.TabPage tab_changelog;
         private System.Windows.Forms.RichTextBox txt_changelog;
+        private System.Windows.Forms.Timer timer_downloadSpeed;
+        private System.Windows.Forms.TabControl gui_settingsTab;
+        private System.Windows.Forms.TabPage tab_options;
         private System.Windows.Forms.GroupBox group_options;
-        private System.Windows.Forms.CheckBox chk_autoCheck;
+        private System.Windows.Forms.CheckBox chk_autoUnzip;
         private System.Windows.Forms.GroupBox group_backups;
-        private System.Windows.Forms.CheckBox chk_backupEnable;
         private System.Windows.Forms.TextBox txt_backupNumCopies;
         private System.Windows.Forms.Label lbl_numBackupCopies;
-        private System.Windows.Forms.CheckBox chk_autoUnzip;
-        private System.Windows.Forms.Timer timer_downloadSpeed;
+        private System.Windows.Forms.CheckBox chk_backupEnable;
+        private System.Windows.Forms.CheckBox chk_autoCheck;
+        private System.Windows.Forms.TabPage tab_about;
+        private System.Windows.Forms.Button btn_checkCNUUpdate;
 
     }
 }
