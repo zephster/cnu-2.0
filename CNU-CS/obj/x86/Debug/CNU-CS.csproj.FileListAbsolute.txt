@@ -3,12 +3,8 @@ C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Deb
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\CNU_CS.Properties.Resources.resources
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\GenerateResource.write.1.tlog
-C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\Chrome Nightly Updater+ 2.0.exe.config
-C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\Chrome Nightly Updater+ 2.0.exe
-C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\Chrome Nightly Updater+ 2.0.pdb
-C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\Chrome Nightly Updater+ 2.0.exe
-C:\Users\brandon\documents\visual studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\Chrome Nightly Updater+ 2.0.pdb
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\Chrome Nightly Updater+ 2.0.exe.manifest
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\Chrome Nightly Updater+ 2.0.application
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\Chrome Nightly Updater+ 2.0.exe.manifest
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\Chrome Nightly Updater+ 2.0.application
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\CNU2.exe.config
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\CNU2.exe
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Debug\CNU2.pdb
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\CNU2.exe
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Debug\CNU2.pdb

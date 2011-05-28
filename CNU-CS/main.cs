@@ -34,20 +34,17 @@ using System.Threading;
  *      auto-check on startup - DONE
  *      keep x number of past copies - DONE
  *      auto-unzip
- *      update checker/downloader/updater for cnu
+ *      update checker/downloader/updater for cnu - in progress
  *      calculate download progress speed in kb/s - DONE
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
- *      timestamps on files
+ *      timestamps on files - DONE
  *      
  * notes to future self
- *      settings tab may have to make window wider and put another tab group for advanced options
  *      adv. options: URIs for chrome LATEST, changelog, and binary
- *      adv. options: maybe a manual override for "latest downloaded"
- *      check for cnup update in advanced?
+ *      adv. options: mybe a manual override for "latest downloaded" version
  *      
- * known bugs - seriously wtf is up with this shit i can't figure these out:
+ * known bugs:
  *      clicking view changelog multiple times re-runs the callback function +1
- *      some useless loops to solve
  */
 
 
@@ -58,6 +55,9 @@ namespace CNU_CS
         private static WebClient client_checkForChromeUpdate = new WebClient();
         private static WebClient client_download = new WebClient();
         private static WebClient client_downloadProgressUpdate = new WebClient();
+
+        public static DateTime date = DateTime.Now;
+        public string timestamp = date.ToString("yyyyMMdd");
 
         public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
@@ -96,10 +96,10 @@ namespace CNU_CS
 
             if (latest_build != "00000")
                 Console.WriteLine("Change latest_build back to 00000 for build\nAnd hide the download group");
-            
+
             if (auto_checkUpdate)
             {
-                Console.WriteLine("auto-checking for chrome updates");
+                //Console.WriteLine("auto-checking for chrome updates");
                 btn_checkUpdate.PerformClick();
             }
 
@@ -108,6 +108,7 @@ namespace CNU_CS
                 Console.WriteLine("auto-unzip enabled");
             }
         }
+
 
         //thread delegates
         private delegate void threadDelegate_update(string message);
@@ -175,7 +176,7 @@ namespace CNU_CS
                 this.timer_downloadSpeed.Enabled = false;
 
                 if (e.Cancelled)
-                    System.IO.File.Delete(appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                    System.IO.File.Delete(appPath + @"\chrome-win32-" + this.latest_build + "-" + this.timestamp + ".zip");
                 else
                 {
                     this.lbl_lastDownloaded.Text = this.latest_build;
@@ -216,7 +217,6 @@ namespace CNU_CS
         //callbacks        
         private void checkUpdateCallback(object sender, DownloadStringCompletedEventArgs e)
         {
-            //this is being fired when viewing changelog. what the fuck?!
             thread_doneUpdating(e.Result);
             Console.WriteLine("checkUpdateCallback - should only be seen when checking for chrome updates");
         }
@@ -299,7 +299,8 @@ namespace CNU_CS
 
                 client_downloadProgressUpdate.DownloadFileCompleted += new AsyncCompletedEventHandler(thread_downloadComplete);
                 client_downloadProgressUpdate.DownloadProgressChanged += new DownloadProgressChangedEventHandler(thread_downloadProgressUpdate);
-                client_downloadProgressUpdate.DownloadFileAsync(latest_build, appPath + @"\chrome-win32-" + this.latest_build + ".zip");
+                client_downloadProgressUpdate.DownloadFileAsync(latest_build,
+                    appPath + @"\chrome-win32-" + this.latest_build + "-" + this.timestamp + ".zip");
                 
                 //test smaller file
                 //client_download.DownloadFileAsync(new Uri("http://friedwalrus.com/files/DSC00741.JPG"), appPath + @"\smaller-test-file.jpg");

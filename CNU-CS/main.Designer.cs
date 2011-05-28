@@ -302,11 +302,12 @@
             // 
             // chk_autoUnzip
             // 
+            this.chk_autoUnzip.AutoSize = true;
             this.chk_autoUnzip.Location = new System.Drawing.Point(14, 40);
             this.chk_autoUnzip.Name = "chk_autoUnzip";
-            this.chk_autoUnzip.Size = new System.Drawing.Size(78, 17);
+            this.chk_autoUnzip.Size = new System.Drawing.Size(105, 17);
             this.chk_autoUnzip.TabIndex = 3;
-            this.chk_autoUnzip.Text = "Auto-unzip";
+            this.chk_autoUnzip.Text = "Auto-unzip - NYI";
             this.chk_autoUnzip.UseVisualStyleBackColor = true;
             this.chk_autoUnzip.CheckedChanged += new System.EventHandler(this.chk_autoUnzip_CheckedChanged);
             // 
@@ -332,8 +333,8 @@
             this.txt_backupNumCopies.TabIndex = 5;
             this.txt_backupNumCopies.Text = "5";
             this.txt_backupNumCopies.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txt_backupNumCopies.TextChanged += new System.EventHandler(this.txt_backupNumCopies_TextChanged);
             this.txt_backupNumCopies.Click += new System.EventHandler(this.txt_backupNumCopies_Click);
+            this.txt_backupNumCopies.TextChanged += new System.EventHandler(this.txt_backupNumCopies_TextChanged);
             this.txt_backupNumCopies.LostFocus += new System.EventHandler(this.txt_backupNumCopies_LostFocus);
             // 
             // lbl_numBackupCopies
@@ -361,7 +362,7 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(14, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
@@ -380,9 +381,10 @@
             // 
             // btn_checkCNUUpdate
             // 
-            this.btn_checkCNUUpdate.Location = new System.Drawing.Point(18, 25);
+            this.btn_checkCNUUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_checkCNUUpdate.Location = new System.Drawing.Point(3, 146);
             this.btn_checkCNUUpdate.Name = "btn_checkCNUUpdate";
-            this.btn_checkCNUUpdate.Size = new System.Drawing.Size(137, 39);
+            this.btn_checkCNUUpdate.Size = new System.Drawing.Size(168, 31);
             this.btn_checkCNUUpdate.TabIndex = 0;
             this.btn_checkCNUUpdate.Text = "Check for CNU Updates";
             this.btn_checkCNUUpdate.UseVisualStyleBackColor = true;
