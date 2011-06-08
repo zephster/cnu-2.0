@@ -305,7 +305,7 @@
             this.chk_autoUnzip.AutoSize = true;
             this.chk_autoUnzip.Location = new System.Drawing.Point(14, 40);
             this.chk_autoUnzip.Name = "chk_autoUnzip";
-            this.chk_autoUnzip.Size = new System.Drawing.Size(105, 17);
+            this.chk_autoUnzip.Size = new System.Drawing.Size(103, 17);
             this.chk_autoUnzip.TabIndex = 3;
             this.chk_autoUnzip.Text = "Auto-unzip - NYI";
             this.chk_autoUnzip.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(14, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
@@ -415,7 +415,7 @@
             // 
             // timer_downloadSpeed
             // 
-            this.timer_downloadSpeed.Interval = 1000;
+            this.timer_downloadSpeed.Interval = 250;
             this.timer_downloadSpeed.Tick += new System.EventHandler(this.timer_downloadSpeed_Tick);
             // 
             // main

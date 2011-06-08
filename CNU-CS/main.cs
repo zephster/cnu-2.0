@@ -27,17 +27,13 @@ using System.IO;
 using System.Xml;
 using System.Net;
 using System.Threading;
+using System.Security.Cryptography;
 
 /*
  * todo:
- *      changelog - DONE!
- *      auto-check on startup - DONE
- *      keep x number of past copies - DONE
  *      auto-unzip
  *      update checker/downloader/updater for cnu - in progress
- *      calculate download progress speed in kb/s - DONE
  *      custom download file naming (the zip file) - use .replace('find', 'replace');
- *      timestamps on files - DONE
  *      
  * notes to future self
  *      adv. options: URIs for chrome LATEST, changelog, and binary
@@ -62,7 +58,8 @@ namespace CNU_CS
         public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
         
-        public const string latest_url = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
+        public const string url_latest = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
+
         public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
 
         public bool backup_enabled = Properties.Settings.Default.backup_enabled;
@@ -107,6 +104,8 @@ namespace CNU_CS
             {
                 Console.WriteLine("auto-unzip enabled");
             }
+
+            //Console.WriteLine(getFileMD5(appPath + "/cnu2.exe"));
         }
 
 
@@ -266,7 +265,7 @@ namespace CNU_CS
             try
             {
                 client_checkForChromeUpdate.DownloadStringCompleted += new DownloadStringCompletedEventHandler(checkUpdateCallback);
-                client_checkForChromeUpdate.DownloadStringAsync(new Uri(latest_url));
+                client_checkForChromeUpdate.DownloadStringAsync(new Uri(url_latest));
             }
             catch (Exception err)
             {
@@ -308,9 +307,25 @@ namespace CNU_CS
             catch (Exception err)
             {
                 throw new Exception("Error downloading update, oh my!\n" + err.Message, err);
-            }
-            
+            }            
         }
+
+        public string getFileMD5(string file)
+        {
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            StringBuilder byteStringArray = new StringBuilder();
+            
+            md5.ComputeHash(stream);
+            stream.Close();
+
+            byte[] hash = md5.Hash;
+            foreach (byte b in hash)
+                byteStringArray.Append(string.Format("{0:x2}", b)); //convert to hex
+
+            return byteStringArray.ToString();
+        }
+
 
 
 
@@ -378,7 +393,6 @@ namespace CNU_CS
         {
             if (backup_enabled)
             {
-                //need to check for null or blank cause if they backspace it'll throw
                 try
                 {
                     backup_copies = Convert.ToInt32(txt_backupNumCopies.Text);
@@ -411,6 +425,12 @@ namespace CNU_CS
                 txt_backupNumCopies.Text = backup_copies_default.ToString();
         }
 
+        private void timer_downloadSpeed_Tick(object sender, EventArgs e)
+        {
+            download_kbps = download_bytesReceived_new - download_bytesReceived_old;
+            download_bytesReceived_old = download_bytesReceived_new;
+            Console.WriteLine("kbps: " + download_kbps);
+        }
 
 
 
@@ -433,13 +453,6 @@ namespace CNU_CS
         {
             Properties.Settings.Default.auto_unzip = chk_autoUnzip.Checked;
             Properties.Settings.Default.Save();
-        }
-
-        private void timer_downloadSpeed_Tick(object sender, EventArgs e)
-        {
-            download_kbps = download_bytesReceived_new - download_bytesReceived_old;
-            download_bytesReceived_old = download_bytesReceived_new;
-            Console.WriteLine("kbps: " + download_kbps);
         }
     }
 }

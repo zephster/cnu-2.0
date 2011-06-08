@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.IO;
 
 namespace CNU_CS
 {
@@ -27,6 +28,8 @@ namespace CNU_CS
         [STAThread]
         static void Main(string[] args)
         {
+            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+
             foreach (string param in args)
             {
                 switch (param)
@@ -42,26 +45,29 @@ namespace CNU_CS
                          *                  md5 hash
                          *                  description of changes
                          *          ask to download/install
-                         *          download the update - .exe format so it can be executed
-                         *          VERIFY UPDATE
+                         *          download the update - cnuupdate.exe or something
+                         *          verify on-server md5 is the same as downloaded files md5
                          *          run update with param --update so this code runs
                          *          exit
                          *          
                          *      --update mode:
-                         *          *this exe will be named something different every time. keep it in mind
-                         *          verify main cnup program is closed
-                         *          delete main app
+                         *          the file downloaded is the new version
+                         *          verify itself
+                         *          make copy of itself named CNU2.exe (file.copy)
+                         *          run CNU2.exe with --updated param (have that delete cnuupdate.exe)
                          *          
-                         * 
                          */
-                        Console.WriteLine("updating...");
-                        
+                        Console.WriteLine("running with parameter: --update");                        
                         
                         //Environment.Exit(0);
                         break;
+
+                    default:
+                        continue;
                 }
             }
 
+            //run main
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new main());
