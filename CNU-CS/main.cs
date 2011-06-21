@@ -57,8 +57,8 @@ namespace CNU_CS
 
         public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
-        
-        public const string url_latest = "http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/LATEST";
+
+        public const string url_latest = "http://74.125.248.71/f/chromium/snapshots/Win/LATEST";
 
         public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
 
@@ -276,7 +276,7 @@ namespace CNU_CS
         private void viewChangelog()
         {
             try{
-                Uri changelog_url = new Uri("http://74.125.248.71/f/chromium/snapshots/chromium-rel-xp/"
+                Uri changelog_url = new Uri("http://74.125.248.71/f/chromium/snapshots/Win/"
                         + this.latest_build +
                         "/changelog.xml");
                 //debug
@@ -291,7 +291,7 @@ namespace CNU_CS
         {
             try
             {
-                Uri latest_build = new Uri("http://74.125.248.71/buildbot/snapshots/chromium-rel-xp/"
+                Uri latest_build = new Uri("http://74.125.248.71/f/chromium/snapshots/Win/"
                     + this.latest_build
                     //+ "85361" //random for testing
                     + "/chrome-win32.zip");
