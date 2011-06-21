@@ -36,7 +36,7 @@ namespace CNU_CS
                 {
                     case "--update":
                         /*
-                         * auto update possible flow:
+                         * auto update possible flow - im sure this is a really stupid way to do this :-( :
                          *      regular main app usage:
                          *          check for latest version
                          *              xml file
