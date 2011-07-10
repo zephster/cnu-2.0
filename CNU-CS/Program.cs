@@ -57,9 +57,16 @@ namespace CNU_CS
                          *          run CNU2.exe with --updated param (have that delete cnuupdate.exe)
                          *          
                          */
-                        Console.WriteLine("running with parameter: --update");                        
+                        Console.WriteLine("running with parameter: --update");
                         
                         //Environment.Exit(0);
+                        break;
+
+                    case "--auto":
+                        Console.WriteLine("testing one-click auto-update");
+                        Console.ReadLine();
+
+                        
                         break;
 
                     default:

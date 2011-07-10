@@ -154,7 +154,7 @@ namespace CNU_CS
 
                 int percent = e.ProgressPercentage;
                 this.progress_download.Value = percent;
-                this.lbl_downloadProgress.Text = mb_down + " mb / " + mb_total + " mb\n" + percent + "% (" + download_kbps + " kb/s)";
+                this.lbl_downloadProgress.Text = mb_down + "MB / " + mb_total + "MB\n" + percent + "% (" + download_kbps + " kb/s)";
                 this.timer_downloadSpeed.Enabled = true;
             }
         }
