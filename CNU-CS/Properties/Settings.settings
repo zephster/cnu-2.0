@@ -17,5 +17,11 @@
     <Setting Name="backup_copies" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
+    <Setting Name="base_url" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://commondatastorage.googleapis.com/chromium-browser-snapshots/Win/</Value>
+    </Setting>
+    <Setting Name="latest_url" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LAST_CHANGE</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

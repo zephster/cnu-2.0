@@ -60,6 +60,12 @@
             this.lbl_CNUversion = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.timer_downloadSpeed = new System.Windows.Forms.Timer(this.components);
+            this.tab_advanced = new System.Windows.Forms.TabPage();
+            this.lblBaseUrl = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtBaseUrl = new System.Windows.Forms.TextBox();
+            this.txtLatestUrl = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.gui_tabs.SuspendLayout();
             this.tab_main.SuspendLayout();
             this.group_update.SuspendLayout();
@@ -71,6 +77,7 @@
             this.group_options.SuspendLayout();
             this.group_backups.SuspendLayout();
             this.tab_about.SuspendLayout();
+            this.tab_advanced.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_lastDownloadedText
@@ -268,6 +275,7 @@
             // gui_settingsTab
             // 
             this.gui_settingsTab.Controls.Add(this.tab_options);
+            this.gui_settingsTab.Controls.Add(this.tab_advanced);
             this.gui_settingsTab.Controls.Add(this.tab_about);
             this.gui_settingsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gui_settingsTab.Location = new System.Drawing.Point(3, 3);
@@ -305,7 +313,7 @@
             this.chk_autoUnzip.AutoSize = true;
             this.chk_autoUnzip.Location = new System.Drawing.Point(14, 40);
             this.chk_autoUnzip.Name = "chk_autoUnzip";
-            this.chk_autoUnzip.Size = new System.Drawing.Size(103, 17);
+            this.chk_autoUnzip.Size = new System.Drawing.Size(105, 17);
             this.chk_autoUnzip.TabIndex = 3;
             this.chk_autoUnzip.Text = "Auto-unzip - NYI";
             this.chk_autoUnzip.UseVisualStyleBackColor = true;
@@ -351,7 +359,7 @@
             this.chk_backupEnable.AutoSize = true;
             this.chk_backupEnable.Location = new System.Drawing.Point(8, 16);
             this.chk_backupEnable.Name = "chk_backupEnable";
-            this.chk_backupEnable.Size = new System.Drawing.Size(150, 17);
+            this.chk_backupEnable.Size = new System.Drawing.Size(147, 17);
             this.chk_backupEnable.TabIndex = 3;
             this.chk_backupEnable.Text = "Enable managed backups";
             this.chk_backupEnable.UseVisualStyleBackColor = true;
@@ -362,7 +370,7 @@
             this.chk_autoCheck.AutoSize = true;
             this.chk_autoCheck.Location = new System.Drawing.Point(14, 16);
             this.chk_autoCheck.Name = "chk_autoCheck";
-            this.chk_autoCheck.Size = new System.Drawing.Size(134, 17);
+            this.chk_autoCheck.Size = new System.Drawing.Size(135, 17);
             this.chk_autoCheck.TabIndex = 1;
             this.chk_autoCheck.Text = "Auto Check on Startup";
             this.chk_autoCheck.UseVisualStyleBackColor = true;
@@ -418,6 +426,64 @@
             this.timer_downloadSpeed.Interval = 250;
             this.timer_downloadSpeed.Tick += new System.EventHandler(this.timer_downloadSpeed_Tick);
             // 
+            // tab_advanced
+            // 
+            this.tab_advanced.Controls.Add(this.txtLatestUrl);
+            this.tab_advanced.Controls.Add(this.txtBaseUrl);
+            this.tab_advanced.Controls.Add(this.label2);
+            this.tab_advanced.Controls.Add(this.label1);
+            this.tab_advanced.Controls.Add(this.lblBaseUrl);
+            this.tab_advanced.Location = new System.Drawing.Point(4, 22);
+            this.tab_advanced.Name = "tab_advanced";
+            this.tab_advanced.Size = new System.Drawing.Size(174, 180);
+            this.tab_advanced.TabIndex = 2;
+            this.tab_advanced.Text = "Advanced";
+            this.tab_advanced.UseVisualStyleBackColor = true;
+            // 
+            // lblBaseUrl
+            // 
+            this.lblBaseUrl.AutoSize = true;
+            this.lblBaseUrl.Location = new System.Drawing.Point(4, 5);
+            this.lblBaseUrl.Name = "lblBaseUrl";
+            this.lblBaseUrl.Size = new System.Drawing.Size(102, 13);
+            this.lblBaseUrl.TabIndex = 0;
+            this.lblBaseUrl.Text = "Chromium Base URL";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 72);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Last Changes File";
+            // 
+            // txtBaseUrl
+            // 
+            this.txtBaseUrl.Location = new System.Drawing.Point(4, 22);
+            this.txtBaseUrl.Multiline = true;
+            this.txtBaseUrl.Name = "txtBaseUrl";
+            this.txtBaseUrl.Size = new System.Drawing.Size(163, 47);
+            this.txtBaseUrl.TabIndex = 1;
+            this.txtBaseUrl.TextChanged += new System.EventHandler(this.txtBaseUrl_TextChanged);
+            // 
+            // txtLatestUrl
+            // 
+            this.txtLatestUrl.Location = new System.Drawing.Point(4, 91);
+            this.txtLatestUrl.Name = "txtLatestUrl";
+            this.txtLatestUrl.Size = new System.Drawing.Size(163, 21);
+            this.txtLatestUrl.TabIndex = 1;
+            this.txtLatestUrl.TextChanged += new System.EventHandler(this.txtLatestUrl_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(4, 129);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(167, 31);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Restart CNU after changing either of these values.";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -447,6 +513,8 @@
             this.group_backups.ResumeLayout(false);
             this.group_backups.PerformLayout();
             this.tab_about.ResumeLayout(false);
+            this.tab_advanced.ResumeLayout(false);
+            this.tab_advanced.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -484,6 +552,12 @@
         private System.Windows.Forms.CheckBox chk_autoCheck;
         private System.Windows.Forms.TabPage tab_about;
         private System.Windows.Forms.Button btn_checkCNUUpdate;
+        private System.Windows.Forms.TabPage tab_advanced;
+        private System.Windows.Forms.TextBox txtBaseUrl;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblBaseUrl;
+        private System.Windows.Forms.TextBox txtLatestUrl;
+        private System.Windows.Forms.Label label2;
 
     }
 }
