@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ZephNET")]
 [assembly: AssemblyProduct("Chrome Nightly Updater+ 2.0")]
-[assembly: AssemblyCopyright("Copyright © Brandon Sachs <antizeph@gmail.com")]
+[assembly: AssemblyCopyright("Copyright © Brandon Sachs <antizeph@gmail.com>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

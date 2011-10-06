@@ -58,12 +58,8 @@ namespace CNU_CS
         public string latest_build = "00000"; //can use 84202 to test
         public string last_downloaded = Properties.Settings.Default.last_downloaded;
 
-        //read from settings
         public string base_url = Properties.Settings.Default.base_url;
         public string url_latest = Properties.Settings.Default.latest_url;
-
-        //public const string base_url = "http://74.125.248.71/f/chromium/snapshots/Win/";
-        //public const string url_latest = base_url + "LATEST";
 
         public string appPath = Path.GetDirectoryName(Application.ExecutablePath);
 
@@ -93,7 +89,6 @@ namespace CNU_CS
             txt_backupNumCopies.Text = backup_copies.ToString();
             txtBaseUrl.Text = base_url;
             txtLatestUrl.Text = url_latest;
-
 
             object v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string version_info = v.ToString();
@@ -140,6 +135,7 @@ namespace CNU_CS
                 this.group_update.Visible = true;
                 this.latest_build = message;
                 Console.WriteLine("done updating");
+                checkChangelog();
             }
         }
 
@@ -340,6 +336,13 @@ namespace CNU_CS
             return byteStringArray.ToString();
         }
 
+        public void checkChangelog()
+        {
+            Thread changelog_thread = new Thread(viewChangelog);
+            changelog_thread.Name = "View Changelog Thread";
+            changelog_thread.Start();
+        }
+
 
 
 
@@ -378,14 +381,6 @@ namespace CNU_CS
         private void btn_viewChangelog_Click(object sender, EventArgs e)
         {
             gui_tabs.SelectedTab = tab_changelog;
-            txt_changelog.Text = "Loading...";
-            //widen width of window
-
-            //viewChangelog();
-
-            Thread changelog_thread = new Thread(viewChangelog);
-            changelog_thread.Name = "View Changelog Thread";
-            changelog_thread.Start();
         }
 
 

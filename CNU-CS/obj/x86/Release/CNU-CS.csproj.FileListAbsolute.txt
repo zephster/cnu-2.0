@@ -7,13 +7,13 @@ C:\Users\brandon\AppData\Local\Temporary Projects\CNU-CS\obj\x86\Release\Generat
 C:\Users\brandon\AppData\Local\Temporary Projects\CNU-CS\obj\x86\Release\GenerateResource.write.1.tlog
 C:\Users\brandon\AppData\Local\Temporary Projects\CNU-CS\obj\x86\Release\CNU-CS.exe
 C:\Users\brandon\AppData\Local\Temporary Projects\CNU-CS\obj\x86\Release\CNU-CS.pdb
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.exe.config
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.exe
+C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.pdb
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\ResolveAssemblyReference.cache
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\CNU_CS.main.resources
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\CNU_CS.Properties.Resources.resources
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\GenerateResource.read.1.tlog
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\GenerateResource.write.1.tlog
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.exe.config
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.exe
-C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\bin\Release\CNU2.pdb
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\CNU2.exe
 C:\Users\brandon\Documents\Visual Studio 2010\Projects\CNU-CS\CNU-CS\obj\x86\Release\CNU2.pdb
