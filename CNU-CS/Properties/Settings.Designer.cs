@@ -106,5 +106,17 @@ namespace CNU_CS.Properties {
                 this["latest_url"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool auto_download {
+            get {
+                return ((bool)(this["auto_download"]));
+            }
+            set {
+                this["auto_download"] = value;
+            }
+        }
     }
 }

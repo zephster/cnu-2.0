@@ -68,6 +68,7 @@ namespace CNU_CS
         public int backup_copies_default = 5;
 
         public bool auto_checkUpdate = Properties.Settings.Default.auto_check;
+        public bool auto_download = Properties.Settings.Default.auto_download;
         public bool auto_unzip = Properties.Settings.Default.auto_unzip;
 
         public long download_bytesReceived_old = 0;
@@ -84,6 +85,7 @@ namespace CNU_CS
         {
             lbl_lastDownloaded.Text = last_downloaded;
             chk_autoCheck.Checked = auto_checkUpdate;
+            chk_autoDownload.Checked = auto_download;
             chk_autoUnzip.Checked = auto_unzip;
             chk_backupEnable.Checked = backup_enabled;
             txt_backupNumCopies.Text = backup_copies.ToString();
@@ -210,6 +212,10 @@ namespace CNU_CS
             else
             {
                 this.txt_changelog.Text = changelog;
+                if (auto_download)
+                {
+                    btn_downloadUpdate.PerformClick();
+                }
             }
         }
 
@@ -343,6 +349,12 @@ namespace CNU_CS
             changelog_thread.Start();
         }
 
+        public void downloadChromeUpdate()
+        {
+            Thread download = new Thread(downloadUpdate);
+            download.Name = "Download Update Thread";
+            download.Start();
+        }
 
 
 
@@ -364,11 +376,7 @@ namespace CNU_CS
             btn_downloadUpdate.Enabled = false;
             btn_cancelDownload.Visible = true;
 
-            //downloadUpdate();
-
-            Thread download = new Thread(downloadUpdate);
-            download.Name = "Download Update Thread";
-            download.Start();
+            downloadChromeUpdate();
         }
 
         private void btn_cancelDownload_Click(object sender, EventArgs e)
@@ -473,6 +481,12 @@ namespace CNU_CS
         private void txtLatestUrl_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.latest_url = txtLatestUrl.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void chk_autoDownload_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.auto_download = chk_autoDownload.Checked;
             Properties.Settings.Default.Save();
         }
     }

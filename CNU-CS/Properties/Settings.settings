@@ -23,5 +23,8 @@
     <Setting Name="latest_url" Type="System.String" Scope="User">
       <Value Profile="(Default)">LAST_CHANGE</Value>
     </Setting>
+    <Setting Name="auto_download" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
